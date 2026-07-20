@@ -10,9 +10,9 @@ import {
 } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import SettingsIcon from '@mui/icons-material/Settings';
+import DashboardIcon from '@mui/icons-material/DashboardOutlined';
+import ChecklistIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 
 import { sidebarText } from '../constants/LayoutConstants';
 
@@ -26,19 +26,19 @@ export default function Sidebar() {
   return (
     <Box
       sx={{
-        width: 280,
+        width: 250,
         flexShrink:0,
-        height: '100vh',
+        height: '1459.2',
         display: 'flex',
         flexDirection: 'column',
         borderRight: '1px solid',
         borderColor: 'divider',
-        p: 2,
+        p: '24px',
       }}
     >
       <Box sx={{ width: '100%', p: 2, textAlign: 'left' }}>
         {/* Logo */}
-        <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
+        <Typography variant="h4" sx={{ letterSpacing: '-0.05em', color: 'primary.main', fontWeight: 700 }}>
           {sidebarText.appName}
         </Typography>
         <Typography variant="caption" color="text.secondary" sx={{ mb: 2 }}>
@@ -55,10 +55,12 @@ export default function Sidebar() {
             to={item.path}
             end={item.path === '/'}
             sx={{
-              borderRadius: 2,
+              borderRadius: '9999px',
+              px: 2,
+              py: 1.5,
               mb: 0.5,
               '&.active': {
-                bgcolor: 'primary.light',
+                bgcolor: '#E2DFFF',
                 color: 'primary.main',
               },
             }}

@@ -1,3 +1,9 @@
+//DashboardConstants.jsx
+import ChecklistIcon from '@mui/icons-material/ChecklistOutlined';
+import CheckCircleIcon from '@mui/icons-material/TaskAltOutlined';
+import PendingIcon from '@mui/icons-material/PendingActionsOutlined';
+import ErrorIcon from '@mui/icons-material/ErrorOutlineOutlined';
+
 export const dashboardPageText = {
   heading: 'Dashboard', 
 };
@@ -10,8 +16,20 @@ export const statCardsData = [
 ];
 
 export const iconMap = {
-  checklist: <ChecklistIcon />,
-  checkCircle: <CheckCircleIcon />,
-  pending: <PendingIcon />,
-  error: <ErrorIcon />,
+  checklist: <ChecklistIcon sx={ {color: 'primary.main'}}/>,
+  checkCircle: <CheckCircleIcon sx={ {color: 'primary.main'}} />,
+  pending: <PendingIcon sx={{color: '#7E3000'}} />,
+  error: <ErrorIcon sx={{color: '#93000A'}}/>,
 };
+
+export const recentlyAddedData = [
+  { id: 1, title: 'Draft Intro', tag: 'Draft', time: '2h ago' },
+  { id: 2, title: 'Group Meeting', tag: 'Social', time: 'Yesterday' },
+  { id: 3, title: 'Buy Textbook', tag: 'Math', time: '2d ago' },
+];
+
+export const upcomingDeadlinesData = [
+  { id: 1, title: 'History Essay', course: 'European History 101', dueLabel: 'Due Tomorrow', urgent: true, completed: false },
+  { id: 2, title: 'Math Quiz Preparation', course: 'Calculus II', dueLabel: 'Oct 25', urgent: false, completed: false },
+  { id: 3, title: 'Read Chapters 4-5', course: 'Biology 200', dueLabel: 'Oct 28', urgent: false, completed: false },
+];

@@ -11,15 +11,19 @@ import {
   MenuItem,
   Button,
   IconButton,
+  Autocomplete,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import {taskSubjects, statuses, priorities, tasksPageText, createTaskModalText, createTaskModalErrors, defaultPriority } from '../constants/MyTasksPageConstants';
-
+import AddIcon from '@mui/icons-material/Add';
+import { statuses, priorities, tasksPageText, createTaskModalText, createTaskModalErrors, defaultPriority } from '../constants/MyTasksPageConstants';
+import { useSubjects } from '../context/SubjectsContext';
 
 export default function CreateTaskModal({ open, onClose }) {
+  const { subjects, addSubject } = useSubjects();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [subject, setSubject] = useState('');
+  const [subject, setSubject] = useState(null); // now an object { id, name, color } or null
   const [priority, setPriority] = useState('Medium Priority');
   const [dueDate, setDueDate] = useState('');
   const [errors, setErrors] = useState({});
@@ -45,7 +49,7 @@ export default function CreateTaskModal({ open, onClose }) {
   const handleClose = () => {
     setTitle('');
     setDescription('');
-    setSubject('');
+    setSubject(null);
     setPriority('Medium Priority');
     setDueDate('');
     setErrors({});
@@ -94,20 +98,58 @@ export default function CreateTaskModal({ open, onClose }) {
         <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
           <Box sx={{ flex: 1 }}>
             <Typography variant="caption" sx={{ fontWeight: 600 }}>{createTaskModalText.subjectLabel}</Typography>
-            <TextField
-              select
-              fullWidth
+            <Autocomplete
               size="small"
               value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              error={!!errors.subject}
-              helperText={errors.subject}
-              sx={{ mt: 0.5 }}
-            >
-              {taskSubjects.map((s) => (
-                <MenuItem key={s} value={s}>{s}</MenuItem>
-              ))}
-            </TextField>
+              options={subjects}
+              getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
+              isOptionEqualToValue={(option, val) => option.id === val?.id}
+              filterOptions={(options, params) => {
+                const filtered = options.filter((o) =>
+                  o.name.toLowerCase().includes(params.inputValue.toLowerCase())
+                );
+                const exists = options.some(
+                  (o) => o.name.toLowerCase() === params.inputValue.toLowerCase()
+                );
+                if (params.inputValue !== '' && !exists) {
+                  filtered.push({ inputValue: params.inputValue, isNew: true });
+                }
+                return filtered;
+              }}
+              onChange={(event, newValue) => {
+                if (typeof newValue === 'string') {
+                  setSubject(addSubject(newValue));
+                } else if (newValue?.isNew) {
+                  setSubject(addSubject(newValue.inputValue));
+                } else {
+                  setSubject(newValue);
+                }
+              }}
+              renderOption={(props, option) => (
+                <Box component="li" {...props} key={option.id ?? option.inputValue}>
+                  {option.isNew ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#6C5CE7' }}>
+                      <AddIcon fontSize="small" />
+                      <Typography variant="body2">Add "{option.inputValue}"</Typography>
+                    </Box>
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: option.color }} />
+                      {option.name}
+                    </Box>
+                  )}
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Select or add"
+                  error={!!errors.subject}
+                  helperText={errors.subject}
+                  sx={{ mt: 0.5 }}
+                />
+              )}
+            />
           </Box>
 
           <Box sx={{ flex: 1 }}>

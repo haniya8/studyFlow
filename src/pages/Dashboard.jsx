@@ -1,18 +1,19 @@
-import { Box, Grid, Typography } from '@mui/material';
-import StatCard from '../components/StatCard';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PendingIcon from '@mui/icons-material/Pending';
-import ErrorIcon from '@mui/icons-material/Error';
-import { dashboardPageText, statCardsData, iconMap } from '../constants/DashboardConstants';
+import { Box, Grid, Stack } from '@mui/material';
+import StatCard from '../components/dashboard/StatCard';
+import OverallProgressCard from '../components/dashboard/OverallProgressCard';
+import RecentlyAddedCard from '../components/dashboard/RecentlyAddedCard';
+import UpcomingDeadlinesCard from '../components/dashboard/UpcomingDeadlinesCard';
+import SubjectsCard from '../components/dashboard/SubjectsCard';
+import {
+  statCardsData,
+  iconMap,
+  recentlyAddedData,
+  upcomingDeadlinesData,
+} from '../constants/DashboardConstants';
 
 function Dashboard() {
   return (
     <Box>
-      <Typography variant="h5" sx={{ mb: 3 }}>
-        {dashboardPageText.heading}
-      </Typography>
-
       <Grid container spacing={2}>
         {statCardsData.map((card) => (
           <Grid key={card.key} size={{ xs: 6, sm: 3 }}>
@@ -20,6 +21,23 @@ function Dashboard() {
           </Grid>
         ))}
       </Grid>
+
+      <Grid container spacing={2} sx={{ mt: 3 }}>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Stack spacing={2}>
+            <OverallProgressCard percentage={67} message="You are making steady progress this week. Keep up the momentum to finish your remaining tasks." />
+            <UpcomingDeadlinesCard tasks={upcomingDeadlinesData} onViewAll={() => {}} />
+          </Stack>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Stack spacing={2}>
+            <RecentlyAddedCard items={recentlyAddedData} />
+            <SubjectsCard onManageSubjects={() => {}} />
+          </Stack>
+        </Grid>
+      </Grid>
+
     </Box>
   );
 }

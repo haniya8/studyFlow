@@ -6,13 +6,27 @@ export default function Header({ title }) {
   return (
     <Box
       sx={{
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        px: '32px',
+        py: '16px',
         mb: 3,
+        borderBottom: '1px solid',
+        borderColor: 'divider',
+
       }}
     >
-      <Typography variant="h5" sx={{ fontWeight: 700 }}>
+      <Typography
+        sx={{
+          fontFamily: 'Quicksand',
+          fontWeight: 600,
+          fontSize: 24,
+          lineHeight: '32px',
+          letterSpacing: 0,
+        }}
+      >
         {title}
       </Typography>
 
@@ -20,7 +34,7 @@ export default function Header({ title }) {
         <IconButton>
           <NotificationsNoneIcon />
         </IconButton>
-        <Avatar sx={{ width: 32, height: 32 }} />
+        <Avatar sx={{ width: 40, height: 40 }} />
       </Box>
     </Box>
   );

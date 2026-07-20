@@ -17,11 +17,11 @@ export default function Layout() {
   const currentTitle = titles[location.pathname] || '';
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%', }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        <Header title={currentTitle} />
-        <Outlet />
+      <Box sx={{ flexGrow: 1, minWidth: 0, display: "flex", flexDirection: "column", p: { xs: 2, sm: 3, md: 4 } }}>
+          <Header title={currentTitle} />
+          <Outlet />
       </Box>
     </Box>
   );
