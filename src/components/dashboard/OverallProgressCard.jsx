@@ -1,13 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import Card from '../Card';
 
+const cardStyle = { p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 3 }
+
 function OverallProgressCard({ percentage = 67, message}) {
   const radius = 42;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <Card sx={{ p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 3 }}>
+    <Card sx={{ ...cardStyle}}>
       <Box sx={{ flex: 1, minWidth:0 }}>
         <Typography variant="h5" fontWeight={600}>
           Overall Progress
