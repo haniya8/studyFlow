@@ -19,7 +19,7 @@ function OverallProgressCard({ percentage = 67, message}) {
 
       <Box sx={{ position: 'relative', width: 100, height: 100, flexShrink: 0, ml: 3}}>
         <svg width={100} height={100} viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r={radius} fill="#0f0f1a" stroke="#2a2a3a" strokeWidth="8" />
+          <circle cx="50" cy="50" r={radius} fill="#ffffff" stroke="#2a2a3a" strokeWidth="8" />
           <circle
             cx="50"
             cy="50"

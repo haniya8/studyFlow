@@ -28,7 +28,7 @@ export default function Sidebar() {
       sx={{
         width: 250,
         flexShrink:0,
-        height: '1459.2',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         borderRight: '1px solid',

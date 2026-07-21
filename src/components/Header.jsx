@@ -16,6 +16,12 @@ export default function Header({ title }) {
         borderBottom: '1px solid',
         borderColor: 'divider',
 
+        position: 'sticky',
+        top: 0,
+        bgcolor: 'background.default',
+        zIndex: 10,
+        py: 2,
+
       }}
     >
       <Typography
