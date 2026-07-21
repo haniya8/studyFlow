@@ -13,21 +13,22 @@ import { NavLink } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/DashboardOutlined';
 import ChecklistIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
+import SchoolIcon from '@mui/icons-material/School';
 
 import { sidebarText } from '../constants/LayoutConstants';
 
 const navItems = [
   { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
   { label: 'Tasks', path: '/tasks', icon: <ChecklistIcon /> },
-  { label: 'Settings', path: '/settings', icon: <SettingsIcon />}
+  { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
 ];
 
 export default function Sidebar() {
   return (
     <Box
       sx={{
-        width: 250,
-        flexShrink:0,
+        width: 300,
+        flexShrink: 0,
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
@@ -37,13 +38,33 @@ export default function Sidebar() {
       }}
     >
       <Box sx={{ width: '100%', p: 2, textAlign: 'left' }}>
-        {/* Logo */}
-        <Typography variant="h4" sx={{ letterSpacing: '-0.05em', color: 'primary.main', fontWeight: 700 }}>
-          {sidebarText.appName}
-        </Typography>
-        <Typography variant="caption" color="text.secondary" sx={{ mb: 2 }}>
-          {sidebarText.workspaceLabel}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+
+          <Box
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: '10px',
+              bgcolor: 'primary.main',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <SchoolIcon sx={{ color: '#fff', fontSize: 22 }} />
+          </Box>
+
+          <Box>
+            <Typography variant="h4" sx={{ letterSpacing: '-0.05em', color: 'primary.main', fontWeight: 700, lineHeight: 1.1 }}>
+              {sidebarText.appName}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {sidebarText.workspaceLabel}
+            </Typography>
+          </Box>
+
+        </Box>
       </Box>
 
       {/* Nav links */}
