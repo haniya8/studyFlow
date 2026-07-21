@@ -33,3 +33,7 @@ export const upcomingDeadlinesData = [
   { id: 2, title: 'Math Quiz Preparation', course: 'Calculus II', dueLabel: 'Oct 25', urgent: false, completed: false },
   { id: 3, title: 'Read Chapters 4-5', course: 'Biology 200', dueLabel: 'Oct 28', urgent: false, completed: false },
 ];
+
+export const OverallProgressCardText = {
+  message: "You are making steady progress this week. Keep up the momentum to finish your remaining tasks."
+};

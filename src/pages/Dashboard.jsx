@@ -9,6 +9,7 @@ import {
   iconMap,
   recentlyAddedData,
   upcomingDeadlinesData,
+  OverallProgressCardText
 } from '../constants/DashboardConstants';
 
 function Dashboard() {
@@ -25,7 +26,7 @@ function Dashboard() {
       <Grid container spacing={2} sx={{ mt: 3 }}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2}>
-            <OverallProgressCard percentage={67} message="You are making steady progress this week. Keep up the momentum to finish your remaining tasks." />
+            <OverallProgressCard percentage={67} message={OverallProgressCardText.message} />
             <UpcomingDeadlinesCard tasks={upcomingDeadlinesData} onViewAll={() => {}} />
           </Stack>
         </Grid>
