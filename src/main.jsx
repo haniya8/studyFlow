@@ -13,13 +13,16 @@ import '@fontsource/quicksand/700.css';
 import theme from './theme.js'
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { SubjectsProvider } from './contexts/SubjectsContext.jsx';
+import { TasksProvider } from './contexts/TasksContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SubjectsProvider>
-        <RouterProvider router={router} />
+        <TasksProvider>
+          <RouterProvider router={router} />
+        </TasksProvider>
       </SubjectsProvider>
     </ThemeProvider>
   </StrictMode>,
