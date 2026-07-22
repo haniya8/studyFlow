@@ -12,7 +12,7 @@ import '@fontsource/quicksand/600.css';
 import '@fontsource/quicksand/700.css';
 import theme from './theme.js'
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import { SubjectsProvider } from './context/SubjectsContext.jsx';
+import { SubjectsProvider } from './contexts/SubjectsContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

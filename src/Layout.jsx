@@ -17,11 +17,17 @@ export default function Layout() {
   const currentTitle = titles[location.pathname] || '';
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%', }}>
+    <Box sx={{ display: 'flex', height: '100vh', width: '100%' }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 1, minWidth: 0, display: "flex", flexDirection: "column", height: '100vh', overflowY: 'auto', px: { xs: 2, sm: 3, md: 4 } }}>
-          <Header title={currentTitle} />
+
+      <Box sx={{ flexGrow: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+
+        <Header title={currentTitle} />
+       
+        {/* Outlet: its own scroll container */}
+        <Box sx={{ flexGrow: 1, overflowY: 'auto', px: { xs: 2, sm: 3, md: 4 }, pb: { xs: 2, sm: 3, md: 4 } }}>
           <Outlet />
+        </Box>
       </Box>
     </Box>
   );

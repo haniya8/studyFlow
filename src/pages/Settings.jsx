@@ -1,18 +1,13 @@
-import { Typography } from "@mui/material";
-import Card from "../components/Card";
-import PaletteIcon from '@mui/icons-material/Palette';
+// src/pages/Settings.jsx
+import { Box } from '@mui/material';
+import AppearanceCard from '../components/AppearanceCard';
 
-function AppearanceCard() {
+function Settings() {
   return (
-    <Card>
-      <Typography variant="h5">
-        Appearance
-      </Typography>
-      <Typography>
-        Switch between Light and Dark Themes
-      </Typography>
-    </Card>
+    <Box>
+      <AppearanceCard />
+    </Box>
   );
 }
 
-export default AppearanceCard;
+export default Settings;

@@ -29,9 +29,9 @@ export const recentlyAddedData = [
 ];
 
 export const upcomingDeadlinesData = [
-  { id: 1, title: 'History Essay', course: 'European History 101', dueLabel: 'Due Tomorrow', urgent: true, completed: false },
-  { id: 2, title: 'Math Quiz Preparation', course: 'Calculus II', dueLabel: 'Oct 25', urgent: false, completed: false },
-  { id: 3, title: 'Read Chapters 4-5', course: 'Biology 200', dueLabel: 'Oct 28', urgent: false, completed: false },
+  { id: 1, title: 'History Essay', subject: 'History', dueLabel: 'Due Tomorrow', urgent: true, completed: false },
+  { id: 2, title: 'Math Quiz Preparation', subject: 'Math', dueLabel: 'Oct 25', urgent: false, completed: false },
+  { id: 3, title: 'Read Chapters 4-5', subject: 'Biology', dueLabel: 'Oct 28', urgent: false, completed: false },
 ];
 
 export const OverallProgressCardText = {

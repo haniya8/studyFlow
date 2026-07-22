@@ -16,6 +16,7 @@ import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import SchoolIcon from '@mui/icons-material/School';
 
 import { sidebarText } from '../constants/LayoutConstants';
+import IconBadge from './iconBadge';
 
 const navItems = [
   { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
@@ -27,7 +28,7 @@ export default function Sidebar() {
   return (
     <Box
       sx={{
-        width: 300,
+        width: 280,
         flexShrink: 0,
         height: '100vh',
         display: 'flex',
@@ -40,26 +41,13 @@ export default function Sidebar() {
       <Box sx={{ width: '100%', p: 2, textAlign: 'left' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
 
-          <Box
-            sx={{
-              width: 40,
-              height: 40,
-              borderRadius: '10px',
-              bgcolor: 'primary.main',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <SchoolIcon sx={{ color: '#fff', fontSize: 22 }} />
-          </Box>
+          <IconBadge icon = {<SchoolIcon sx={{ color: '#fff', fontSize: 22 }} />} />
 
           <Box>
-            <Typography variant="h4" sx={{ letterSpacing: '-0.05em', color: 'primary.main', fontWeight: 700, lineHeight: 1.1 }}>
+            <Typography variant="h5" sx={{ letterSpacing: '-0.05em', color: 'primary.main', fontWeight: 700, lineHeight: 1.1 }}>
               {sidebarText.appName}
             </Typography>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="h6" color="text.secondary">
               {sidebarText.workspaceLabel}
             </Typography>
           </Box>

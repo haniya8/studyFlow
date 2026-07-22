@@ -37,7 +37,7 @@ function UpcomingDeadlinesCard({ tasks = [], onViewAll }) {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5 }}>
                   <SchoolIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
                   <Typography variant="caption" color="text.secondary">
-                    {task.course}
+                    {task.subject}
                   </Typography>
                 </Box>
               </Box>

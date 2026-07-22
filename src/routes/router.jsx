@@ -1,9 +1,10 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { Settings, Task } from "@mui/icons-material";
+import { Task } from "@mui/icons-material";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import Layout from "../Layout";
 import Dashboard from "../pages/Dashboard";
 import MyTasks from "../pages/MyTasks";
+import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter(

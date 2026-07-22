@@ -1,11 +1,13 @@
 import { Typography, Box, Stack, Button } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { useSubjects } from '../../context/SubjectsContext';
+import { useSubjects } from '../../contexts/SubjectsContext';
 import Card from '../Card';
+import ManageSubjectsDialog from './ManageSubjectsDialog';
+import { useState } from 'react';
 
-function SubjectsCard({ onManageSubjects }) {
+function SubjectsCard() {
   const { subjects } = useSubjects();
+  const [manageOpen, setManageOpen] = useState(false);
 
   return (
     <Card sx={{ p: 3, borderRadius: 3 }}>
@@ -26,9 +28,10 @@ function SubjectsCard({ onManageSubjects }) {
           </Box>
         ))}
       </Stack>
-      <Button fullWidth variant="outlined" startIcon={<SettingsIcon />} onClick={onManageSubjects} sx={{ textTransform: 'none', borderRadius: 2 }}>
+      <Button fullWidth variant="outlined" onClick={()=>setManageOpen(true)} sx={{ textTransform: 'none', borderRadius: 2 }}>
         Manage Subjects
       </Button>
+      <ManageSubjectsDialog open={manageOpen} onClose={() => setManageOpen(false)} />
     </Card>
   );
 }
