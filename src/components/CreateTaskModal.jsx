@@ -1,5 +1,6 @@
 // components/CreateTaskModal.jsx
 import { useState } from 'react';
+import {useTasks} from '../contexts/TasksContext';
 import {
   Dialog,
   DialogTitle,
@@ -20,6 +21,7 @@ import { useSubjects } from '../contexts/SubjectsContext';
 
 export default function CreateTaskModal({ open, onClose }) {
   const { subjects, addSubject } = useSubjects();
+  const { addTask } = useTasks();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -41,8 +43,9 @@ export default function CreateTaskModal({ open, onClose }) {
   const handleSave = () => {
     if (!validate()) return;
 
-    const newTask = { title, description, subject, priority, dueDate };
+    addTask({ title, description, subjectId: subject.id, priority, dueDate });
     console.log('New task:', newTask);
+
     handleClose();
   };
 
