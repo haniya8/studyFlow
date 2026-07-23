@@ -1,10 +1,5 @@
 // src/constants/tasksPageContent.js
-
-export const filterSubjects = ['All', 'Math', 'Science', 'History'];
 export const statuses = ['All', 'Doing', 'Done'];
-
-// Used by CreateTaskModal.jsx dropdown (no "All" — a task must have a real subject)
-export const taskSubjects = ['Math', 'Science', 'History'];
 export const priorities = ['Low Priority', 'Medium Priority', 'High Priority'];
 export const defaultPriority = 'Medium Priority';
 

@@ -1,24 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Chip, Grid, Button, Paper, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import TaskCard from '../components/TaskCard';
 import CreateTaskModal from '../components/CreateTaskModal';
-import { sampleTasks } from '../constants/sampleTasks';
-import { filterSubjects, statuses, tasksPageText } from '../constants/MyTasksPageConstants';
-
+import { statuses, tasksPageText } from '../constants/MyTasksPageConstants';
+import { useTasks } from '../contexts/TasksContext';
+import { useSubjects } from '../contexts/SubjectsContext';
 export default function Tasks() {
+  const { tasks } = useTasks();
+  const { subjects } = useSubjects();
+
   const [modalOpen, setModalOpen] = useState(false);
-  const [subjectFilter, setSubjectFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
   const [searchText, setSearchText] = useState('');
 
-  const filteredTasks = sampleTasks.filter((task) => {
-    const matchesSubject = subjectFilter === 'All' || task.subject === subjectFilter;
-    const matchesStatus = statusFilter === 'All' || task.status === statusFilter;
+  const SUBJECT_KEY = 'studyflow.tasks.subjectFilter';
+  const STATUS_KEY = 'studyflow.tasks.statusFilter';
+
+  const [subjectFilter, setSubjectFilter] = useState(
+    () => sessionStorage.getItem(SUBJECT_KEY) || 'All'
+  );
+  const [statusFilter, setStatusFilter] = useState(
+    () => sessionStorage.getItem(STATUS_KEY) || 'All'
+  );
+
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSubject = subjectFilter === 'All' || task.subjectId === subjectFilter;
+    const matchesStatus = 
+      statusFilter === 'All' || (statusFilter === 'Done' ? task.completed : !task.completed);
     const matchesSearch = task.title.toLowerCase().includes(searchText.toLowerCase());
     return matchesSubject && matchesStatus && matchesSearch;
   });
+
+  useEffect(() => {
+    sessionStorage.setItem(SUBJECT_KEY, subjectFilter);
+  }, [subjectFilter]);
+
+  useEffect(() => {
+    sessionStorage.setItem(STATUS_KEY, statusFilter);
+  }, [statusFilter]);
+
 
   return (
     <Box>
@@ -53,13 +74,20 @@ export default function Tasks() {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography variant="body2">{tasksPageText.subjectLabel}</Typography>
-          {filterSubjects.map((s) => (
+          <Chip
+            label="All"
+            size="small"
+            onClick={() => setSubjectFilter('All')}
+            color={subjectFilter === 'All' ? 'primary' : 'default'}
+          />
+
+          {subjects.map((s) => (
             <Chip
-              key={s}
-              label={s}
+              key = {s.id}
+              label= {s.name}
               size="small"
-              onClick={() => setSubjectFilter(s)}
-              color={subjectFilter === s ? 'primary' : 'default'}
+              onClick={() => setSubjectFilter(s.id)}
+              color={subjectFilter === s.id ? 'primary' : 'default'}
             />
           ))}
         </Box>

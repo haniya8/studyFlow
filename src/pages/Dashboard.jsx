@@ -11,12 +11,19 @@ import {
   upcomingDeadlinesData,
   OverallProgressCardText
 } from '../constants/DashboardConstants';
+import { useTasks } from '../contexts/TasksContext';
 
 function Dashboard() {
+  const {tasks} = useTasks();
+
+  const upcomingTasks = [...tasks]
+    .filter((t) => !t.completed)
+    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+    .slice(0, 5);
   return (
     <Box>
       <Grid container spacing={2}>
-        {statCardsData.map((card) => (
+        {statCardsData(tasks).map((card) => (
           <Grid key={card.key} size={{ xs: 6, sm: 3 }}>
             <StatCard icon={iconMap[card.icon]} label={card.label} count={card.count} />
           </Grid>
