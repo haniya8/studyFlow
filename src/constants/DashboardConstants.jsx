@@ -29,11 +29,6 @@ export const iconMap = {
   error: <ErrorIcon sx={{color: '#93000A'}}/>,
 };
 
-export const recentlyAddedData = [
-  { id: 1, title: 'Draft Intro', tag: 'Draft', time: '2h ago' },
-  { id: 2, title: 'Group Meeting', tag: 'Social', time: 'Yesterday' },
-  { id: 3, title: 'Buy Textbook', tag: 'Math', time: '2d ago' },
-];
 
 
 

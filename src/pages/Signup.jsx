@@ -159,7 +159,7 @@ export default function Signup() {
 
         <Typography variant="body2" color="text.secondary" textAlign="center">
           Already have an account?{' '}
-          <Link component={RouterLink} to="/login" underline="hover" fontWeight={600}>
+          <Link component={RouterLink} to="/" underline="hover" fontWeight={600}>
             Sign in
           </Link>
         </Typography>

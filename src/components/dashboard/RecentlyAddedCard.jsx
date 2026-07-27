@@ -1,12 +1,6 @@
 import { Typography, Box, Chip, Stack } from '@mui/material';
 import Card from '../Card';
 
-const tagColors = {
-  Draft: { bg: '#F1F0FE', color: '#6C5CE7' },
-  Social: { bg: '#FDEDEE', color: '#E74C3C' },
-  Math: { bg: '#EAF6EE', color: '#27AE60' },
-};
-
 function RecentlyAddedCard({ items = [] }) {
   return (
     <Card sx={{ p: 3, borderRadius: 3 }}>
@@ -30,8 +24,8 @@ function RecentlyAddedCard({ items = [] }) {
               label={item.tag}
               size="small"
               sx={{
-                bgcolor: tagColors[item.tag]?.bg || '#F1F0FE',
-                color: tagColors[item.tag]?.color || '#6C5CE7',
+                bgcolor: item.tagColor ? `${item.tagColor}22` : '#F1F0FE',
+                color: item.tagColor || '#6C5CE7',
                 fontWeight: 600,
                 height: 22,
               }}
