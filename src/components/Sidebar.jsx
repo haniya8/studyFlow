@@ -19,9 +19,9 @@ import { sidebarText } from '../constants/LayoutConstants';
 import IconBadge from './iconBadge';
 
 const navItems = [
-  { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
-  { label: 'Tasks', path: '/tasks', icon: <ChecklistIcon /> },
-  { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
+  { label: 'Dashboard', path: '/app', icon: <DashboardIcon /> },
+  { label: 'Tasks', path: '/app/tasks', icon: <ChecklistIcon /> },
+  { label: 'Settings', path: '/app/settings', icon: <SettingsIcon /> },
 ];
 
 export default function Sidebar() {
