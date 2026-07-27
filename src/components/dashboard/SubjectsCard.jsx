@@ -4,7 +4,7 @@ import { useSubjects } from '../../contexts/SubjectsContext';
 import Card from '../Card';
 import ManageSubjectsDialog from './ManageSubjectsDialog';
 import { useState } from 'react';
-
+import SubjectLabel from './SubjectLabel';
 function SubjectsCard() {
   const { subjects } = useSubjects();
   const [manageOpen, setManageOpen] = useState(false);
@@ -20,10 +20,7 @@ function SubjectsCard() {
               py: '12px', 
               borderBottom: index < subjects.length - 1 ? '1px solid' : 'none',
               borderColor: 'divider', cursor: 'pointer' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: subject.color }} />
-              <Typography variant="body2">{subject.name}</Typography>
-            </Box>
+            <SubjectLabel subject={subject}/>
             <ChevronRightIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
           </Box>
         ))}

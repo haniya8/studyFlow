@@ -1,6 +1,6 @@
 // src/pages/Settings.jsx
 import { Box } from '@mui/material';
-import AppearanceCard from '../components/AppearanceCard';
+import AppearanceCard from '../components/settings/AppearanceCard';
 
 function Settings() {
   return (

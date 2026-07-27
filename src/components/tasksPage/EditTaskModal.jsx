@@ -1,6 +1,5 @@
-// components/CreateTaskModal.jsx
-import { useState } from 'react';
-import {useTasks} from '../contexts/TasksContext';
+// components/tasksPage/EditTaskModal.jsx
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -16,19 +15,32 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
-import { statuses, priorities, tasksPageText, createTaskModalText, createTaskModalErrors, defaultPriority } from '../constants/MyTasksPageConstants';
-import { useSubjects } from '../contexts/SubjectsContext';
+import { priorities, createTaskModalText, createTaskModalErrors } from '../../constants/MyTasksPageConstants';
+import { useSubjects } from '../../contexts/SubjectsContext';
+import { useTasks } from '../../contexts/TasksContext';
 
-export default function CreateTaskModal({ open, onClose }) {
+export default function EditTaskModal({ open, onClose, task }) {
   const { subjects, addSubject } = useSubjects();
-  const { addTask } = useTasks();
+  const { updateTask } = useTasks();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [subject, setSubject] = useState(null); // now an object { id, name, color } or null
+  const [subject, setSubject] = useState(null);
   const [priority, setPriority] = useState('Medium Priority');
   const [dueDate, setDueDate] = useState('');
   const [errors, setErrors] = useState({});
+
+  // pre-fill fields whenever a new task is passed in / modal opens
+  useEffect(() => {
+    if (task) {
+      setTitle(task.title || '');
+      setDescription(task.description || '');
+      setSubject(subjects.find((s) => s.id === task.subjectId) || null);
+      setPriority(task.priority || 'Medium Priority');
+      setDueDate(task.dueDate || '');
+      setErrors({});
+    }
+  }, [task, subjects]);
 
   const validate = () => {
     const newErrors = {};
@@ -43,33 +55,26 @@ export default function CreateTaskModal({ open, onClose }) {
   const handleSave = () => {
     if (!validate()) return;
 
-    addTask({ title, description, subjectId: subject.id, priority, dueDate });
-    
-    handleClose();
-    
-  };
-
-  const handleClose = () => {
-    setTitle('');
-    setDescription('');
-    setSubject(null);
-    setPriority('Medium Priority');
-    setDueDate('');
-    setErrors({});
+    updateTask(task.id, {
+      title,
+      description,
+      subjectId: subject.id,
+      priority,
+      dueDate,
+    });
     onClose();
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Box>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>{createTaskModalText.heading}</Typography>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>Edit Task</Typography>
           <Typography variant="body2" color="text.secondary">
-            {createTaskModalText.subheading}
+            Update the details for this task.
           </Typography>
         </Box>
-
-        <IconButton onClick={handleClose} size="small"> 
+        <IconButton onClick={onClose} size="small">
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -77,7 +82,6 @@ export default function CreateTaskModal({ open, onClose }) {
       <DialogContent>
         <Typography variant="caption" sx={{ fontWeight: 600 }}>{createTaskModalText.titleLabel}</Typography>
         <TextField
-          placeholder={createTaskModalText.titlePlaceholder}
           fullWidth
           size="small"
           value={title}
@@ -89,7 +93,6 @@ export default function CreateTaskModal({ open, onClose }) {
 
         <Typography variant="caption" sx={{ fontWeight: 600 }}>DESCRIPTION</Typography>
         <TextField
-          placeholder={createTaskModalText.descriptionPlaceholder}
           fullWidth
           multiline
           rows={3}
@@ -144,13 +147,7 @@ export default function CreateTaskModal({ open, onClose }) {
                 </Box>
               )}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Select or add"
-                  error={!!errors.subject}
-                  helperText={errors.subject}
-                  sx={{ mt: 0.5 }}
-                />
+                <TextField {...params} error={!!errors.subject} helperText={errors.subject} sx={{ mt: 0.5 }} />
               )}
             />
           </Box>
@@ -185,8 +182,8 @@ export default function CreateTaskModal({ open, onClose }) {
       </DialogContent>
 
       <DialogActions sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider' }}>
-        <Button onClick={handleClose} variant="outlined">{createTaskModalText.cancelButton}</Button>
-        <Button onClick={handleSave} variant="contained">{createTaskModalText.saveButton}</Button>
+        <Button onClick={onClose} variant="outlined">Cancel</Button>
+        <Button onClick={handleSave} variant="contained">Save Changes</Button>
       </DialogActions>
     </Dialog>
   );

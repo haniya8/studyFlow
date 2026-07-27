@@ -40,12 +40,18 @@ export function TasksProvider({ children }) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
+  const updateTask = useCallback((id, updates) => {
+  setTasks((prev) =>
+    prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
+  );
+  }, []);
+
   const toggleTaskComplete = useCallback((id) => {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
   }, []);
 
   return (
-    <TasksContext.Provider value={{ tasks, addTask, removeTask, toggleTaskComplete }}>
+    <TasksContext.Provider value={{ tasks, addTask, removeTask, toggleTaskComplete, updateTask }}>
       {children}
     </TasksContext.Provider>
   );

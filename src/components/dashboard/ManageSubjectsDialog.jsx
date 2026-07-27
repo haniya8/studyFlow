@@ -4,6 +4,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import AddIcon from '@mui/icons-material/Add';
 import { useSubjects } from '../../contexts/SubjectsContext';
 import { useState } from 'react';
+import SubjectLabel from './SubjectLabel';
 
 export default function ManageSubjectsDialog({ open, onClose }) {
   const { subjects, removeSubject, addSubject } = useSubjects();
@@ -50,10 +51,7 @@ export default function ManageSubjectsDialog({ open, onClose }) {
             key={subject.id}
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 1 }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: subject.color }} />
-              <Typography variant="body2">{subject.name}</Typography>
-            </Box>
+            <SubjectLabel subject={subject}/>
             <IconButton size="small" onClick={() => removeSubject(subject.id)}>
               <DeleteOutlineOutlinedIcon fontSize="small" />
             </IconButton>
