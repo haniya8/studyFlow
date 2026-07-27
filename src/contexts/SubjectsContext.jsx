@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-
+import { getNextId } from '../utils/getNextId';
 const defaultSubjects = [
   { id: 1, name: 'Mathematics', color: '#6C5CE7' },
 ];
@@ -40,7 +40,7 @@ export function SubjectsProvider({ children }) {
     if (existing) return existing;
 
     const newSubject = {
-      id: Date.now(),
+      id: getNextId(subjects),
       name: trimmed,
       color: palette[subjects.length % palette.length],
     };

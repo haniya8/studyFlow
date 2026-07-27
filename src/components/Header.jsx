@@ -1,8 +1,36 @@
 // components/Header.jsx
-import { Box, Typography, IconButton, Avatar } from '@mui/material';
+import { Box, Typography, IconButton, Avatar, Menu, MenuItem } from '@mui/material';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { useState } from 'react';
 
 export default function Header({ title }) {
+  const [bellAnchorEl, setBellAnchorEl] = useState(null);
+  const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
+
+  const bellMenuOpen = Boolean(bellAnchorEl);
+  const avatarMenuOpen = Boolean(avatarAnchorEl);
+
+  const handleBellClick = (event) => {
+    setBellAnchorEl(event.currentTarget);
+  };
+
+  const handleBellMenuClose = () => {
+    setBellAnchorEl(null);
+  };
+
+  const handleAvatarClick = (event) => {
+    setAvatarAnchorEl(event.currentTarget);
+  };
+
+  const handleAvatarMenuClose = () => {
+    setAvatarAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleAvatarMenuClose();
+    console.log('Logging out...');
+  };
+
   return (
     <Box
       sx={{
@@ -11,17 +39,10 @@ export default function Header({ title }) {
         alignItems: 'center',
         justifyContent: 'space-between',
         px: '32px',
-        py: '16px',
+        py: 2,
         mb: 3,
         borderBottom: '1px solid',
         borderColor: 'divider',
-
-        position: 'sticky',
-        top: 0,
-        bgcolor: 'background.default',
-        zIndex: 10,
-        py: 2,
-
       }}
     >
       <Typography
@@ -37,10 +58,19 @@ export default function Header({ title }) {
       </Typography>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <IconButton>
+        <IconButton onClick={handleBellClick} sx={{ cursor: 'pointer' }}>
           <NotificationsNoneIcon />
         </IconButton>
-        <Avatar sx={{ width: 40, height: 40 }} />
+
+        <Menu anchorEl={bellAnchorEl} open={bellMenuOpen} onClose={handleBellMenuClose}>
+          <MenuItem onClick={handleBellMenuClose}>No Notifications yet.</MenuItem>
+        </Menu>
+
+        <Avatar onClick={handleAvatarClick} sx={{ cursor: 'pointer' }} />
+
+        <Menu anchorEl={avatarAnchorEl} open={avatarMenuOpen} onClose={handleAvatarMenuClose}>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>
       </Box>
     </Box>
   );

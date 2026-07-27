@@ -44,9 +44,9 @@ export default function CreateTaskModal({ open, onClose }) {
     if (!validate()) return;
 
     addTask({ title, description, subjectId: subject.id, priority, dueDate });
-    console.log('New task:', newTask);
-
+    
     handleClose();
+    
   };
 
   const handleClose = () => {

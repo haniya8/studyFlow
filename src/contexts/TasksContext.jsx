@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { getNextId } from '../utils/getNextId';
 
 const defaultTasks = [
-  { id: 1, title: 'Calculus Assignment', subjectId: 1, priority: 'medium', dueDate: '2026-08-01', completed: false },
+  { id: 1, title: 'Calculus Assignment', subjectId: 1, priority: 'Medium Priority', dueDate: '2026-08-01', completed: false },
 ];
 
 const STORAGE_KEY = 'studyflow.tasks';
@@ -30,7 +31,7 @@ export function TasksProvider({ children }) {
   }, [tasks]);
 
   const addTask = useCallback((task) => {
-    const newTask = { id: Date.now(), completed: false, ...task };
+    const newTask = { id: getNextId(tasks), completed: false, ...task };
     setTasks((prev) => [...prev, newTask]);
     return newTask;
   }, []);

@@ -14,23 +14,34 @@ export default function Tasks() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  const SUBJECT_KEY = 'studyflow.tasks.subjectFilter';
-  const STATUS_KEY = 'studyflow.tasks.statusFilter';
+  // TODO: move into constants
+  const SUBJECT_KEY = 'taskSubjectFilter';
+  const STATUS_KEY = 'taskStatusFilter';
 
+  // TODO: move into a custom hook logic
   const [subjectFilter, setSubjectFilter] = useState(
-    () => sessionStorage.getItem(SUBJECT_KEY) || 'All'
+    () => {
+      const stored = sessionStorage.getItem(SUBJECT_KEY);
+      if (!stored || stored === 'All') return 'All';
+      return Number(stored);
+    }
   );
   const [statusFilter, setStatusFilter] = useState(
     () => sessionStorage.getItem(STATUS_KEY) || 'All'
   );
 
   const filteredTasks = tasks.filter((task) => {
-    const matchesSubject = subjectFilter === 'All' || task.subjectId === subjectFilter;
+    console.log(subjectFilter, "subjectFilter");
+    const matchesSubject = task.subjectId === subjectFilter || subjectFilter === 'All' ;
     const matchesStatus = 
       statusFilter === 'All' || (statusFilter === 'Done' ? task.completed : !task.completed);
     const matchesSearch = task.title.toLowerCase().includes(searchText.toLowerCase());
+
+    // console.log(matchesSubject && matchesStatus && matchesSearch);
     return matchesSubject && matchesStatus && matchesSearch;
   });
+
+  console.log(filteredTasks)
 
   useEffect(() => {
     sessionStorage.setItem(SUBJECT_KEY, subjectFilter);
