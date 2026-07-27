@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 export default function ManageSubjectsDialog({ open, onClose }) {
   const { subjects, removeSubject, addSubject } = useSubjects();
-  const [newSubject, setNewSubject] = useState(' ');
+  const [newSubject, setNewSubject] = useState('');
 
   const handleAdd = () => {
     if (!newSubject.trim()) return;

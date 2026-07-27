@@ -8,11 +8,11 @@ import {
   statCardsData,
   iconMap,
   recentlyAddedData,
-  upcomingDeadlinesData,
+  
   OverallProgressCardText
 } from '../constants/DashboardConstants';
 import { useTasks } from '../contexts/TasksContext';
-
+import {sectionSpacingSx} from '../styles/dashboardStyles'
 function Dashboard() {
   const {tasks} = useTasks();
 
@@ -34,7 +34,7 @@ function Dashboard() {
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2}>
             <OverallProgressCard percentage={67} message={OverallProgressCardText.message} />
-            <UpcomingDeadlinesCard tasks={upcomingDeadlinesData} onViewAll={() => {}} />
+            <UpcomingDeadlinesCard tasks={upcomingTasks} onViewAll={() => {}} />
           </Stack>
         </Grid>
 

@@ -6,17 +6,13 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Avatar,
 } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-
 import DashboardIcon from '@mui/icons-material/DashboardOutlined';
 import ChecklistIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
-import SchoolIcon from '@mui/icons-material/School';
-
+import AppLogo from './AppLogo';
 import { sidebarText } from '../constants/LayoutConstants';
-import IconBadge from './iconBadge';
 
 const navItems = [
   { label: 'Dashboard', path: '/app', icon: <DashboardIcon /> },
@@ -39,20 +35,7 @@ export default function Sidebar() {
       }}
     >
       <Box sx={{ width: '100%', p: 2, textAlign: 'left' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-
-          <IconBadge icon = {<SchoolIcon sx={{ color: '#fff', fontSize: 22 }} />} />
-
-          <Box>
-            <Typography variant="h5" sx={{ letterSpacing: '-0.05em', color: 'primary.main', fontWeight: 700, lineHeight: 1.1 }}>
-              {sidebarText.appName}
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              {sidebarText.workspaceLabel}
-            </Typography>
-          </Box>
-
-        </Box>
+        <AppLogo />
       </Box>
 
       {/* Nav links */}

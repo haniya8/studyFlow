@@ -21,6 +21,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SchoolIcon from '@mui/icons-material/School';
 import Card from '../components/Card';
 import IconBadge from '../components/IconBadge';
+import AppLogo from '../components/AppLogo';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -50,12 +51,7 @@ export default function Login() {
       }}
     >
       {/* Logo */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-        <IconBadge icon={<SchoolIcon sx={{ color: '#fff', fontSize: 24 }} />} size={48} />
-        <Typography variant="h5" color="primary.main" fontWeight={700}>
-          StudyFlow
-        </Typography>
-      </Box>
+      <AppLogo />
 
       {/* Card */}
       <Card sx={{ width: '100%', maxWidth: 360, p: 4 }}>

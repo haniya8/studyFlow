@@ -35,11 +35,7 @@ export const recentlyAddedData = [
   { id: 3, title: 'Buy Textbook', tag: 'Math', time: '2d ago' },
 ];
 
-export const upcomingDeadlinesData = [
-  { id: 1, title: 'History Essay', subject: 'History', dueLabel: 'Due Tomorrow', urgent: true, completed: false },
-  { id: 2, title: 'Math Quiz Preparation', subject: 'Math', dueLabel: 'Oct 25', urgent: false, completed: false },
-  { id: 3, title: 'Read Chapters 4-5', subject: 'Biology', dueLabel: 'Oct 28', urgent: false, completed: false },
-];
+
 
 export const OverallProgressCardText = {
   message: "You are making steady progress this week. Keep up the momentum to finish your remaining tasks."

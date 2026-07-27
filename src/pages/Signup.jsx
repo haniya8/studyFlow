@@ -12,6 +12,7 @@ import {
   Link,
 } from '@mui/material';
 
+import AppLogo from '../components/AppLogo';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -19,7 +20,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import SchoolIcon from '@mui/icons-material/School';
+
 import Card from '../components/Card';
 import IconBadge from '../components/IconBadge';
 
@@ -53,12 +54,7 @@ export default function Signup() {
     >
       <Card sx={{ width: '100%', maxWidth: 380, p: 4 }}>
         {/* Logo */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mb: 2 }}>
-          <IconBadge icon={<SchoolIcon sx={{ color: '#fff', fontSize: 24 }} />} size={48} />
-          <Typography variant="h5" color="primary.main" fontWeight={700}>
-            StudyFlow
-          </Typography>
-        </Box>
+        <AppLogo sx={{ mb: 2 }} />
 
         <Typography variant="h6" fontWeight={700} textAlign="center">
           Create Account
