@@ -62,7 +62,7 @@ export default function Sidebar() {
             key={item.path}
             component={NavLink}
             to={item.path}
-            end={item.path === '/'}
+            end={item.path === '/app'}
             sx={{
               borderRadius: '9999px',
               px: 2,

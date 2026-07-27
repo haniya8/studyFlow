@@ -2,11 +2,11 @@
 import { Box, Typography, IconButton, Avatar, Menu, MenuItem } from '@mui/material';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 export default function Header({ title }) {
   const [bellAnchorEl, setBellAnchorEl] = useState(null);
   const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
-
+  const navigate = useNavigate();
   const bellMenuOpen = Boolean(bellAnchorEl);
   const avatarMenuOpen = Boolean(avatarAnchorEl);
 
@@ -28,7 +28,7 @@ export default function Header({ title }) {
 
   const handleLogout = () => {
     handleAvatarMenuClose();
-    console.log('Logging out...');
+    navigate('/');
   };
 
   return (
