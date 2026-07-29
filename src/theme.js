@@ -19,6 +19,15 @@ const theme = createTheme({
       lineHeight: '16px',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+  },
 });
 
 export default theme;

@@ -4,22 +4,42 @@ import OverallProgressCard from '../components/dashboard/OverallProgressCard';
 import RecentlyAddedCard from '../components/dashboard/RecentlyAddedCard';
 import UpcomingDeadlinesCard from '../components/dashboard/UpcomingDeadlinesCard';
 import SubjectsCard from '../components/dashboard/SubjectsCard';
-import {
-  statCardsData,
-  iconMap,
-  recentlyAddedData,
-  
-  OverallProgressCardText
-} from '../constants/DashboardConstants';
+import { statCardsData, iconMap, getOverallProgress } from '../constants/DashboardConstants';
 import { useTasks } from '../contexts/TasksContext';
-import {sectionSpacingSx} from '../styles/dashboardStyles'
+import { dashboardStyles } from '../styles/dashboard.styles';
+import { formatRelativeTime } from '../utils/helper';
+import { formatDueDateLabel } from '../utils/formatDueDateLabel';
+import { useSubjects } from '../contexts/SubjectsContext';
+
 function Dashboard() {
-  const {tasks} = useTasks();
+  const { tasks } = useTasks();
+  const { subjects } = useSubjects();
+
+  const recentlyAddedItems = [...tasks]
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .slice(0, 3)
+    .map((task) => {
+      const subject = subjects.find((s) => s.id === task.subjectId);
+      return {
+        id: task.id,
+        title: task.title,
+        tag: subject?.name || 'No subject',
+        tagColor: subject?.color,
+        time: formatRelativeTime(task.createdAt),
+      };
+    });
 
   const upcomingTasks = [...tasks]
     .filter((t) => !t.completed)
-    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-    .slice(0, 5);
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
+    .slice(0, 5)
+    .map((task) => {
+      const { dueLabel, urgent } = formatDueDateLabel(task.dueDate);
+      return { ...task, dueLabel, urgent };
+    });
+
+  const { percentage, message } = getOverallProgress(tasks);
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -30,22 +50,21 @@ function Dashboard() {
         ))}
       </Grid>
 
-      <Grid container spacing={2} sx={{ mt: 3 }}>
+      <Grid container spacing={2} sx={dashboardStyles.sectionSpacing}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2}>
-            <OverallProgressCard percentage={67} message={OverallProgressCardText.message} />
+            <OverallProgressCard percentage={percentage} message={message} />
             <UpcomingDeadlinesCard tasks={upcomingTasks} onViewAll={() => {}} />
           </Stack>
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Stack spacing={2}>
-            <RecentlyAddedCard items={recentlyAddedData} />
+            <RecentlyAddedCard items={recentlyAddedItems} />
             <SubjectsCard onManageSubjects={() => {}} />
           </Stack>
         </Grid>
       </Grid>
-
     </Box>
   );
 }

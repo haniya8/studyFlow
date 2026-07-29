@@ -1,1 +1,0 @@
-export const sectionSpacingSx = { mt: 3 };

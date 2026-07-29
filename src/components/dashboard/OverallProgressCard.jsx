@@ -5,7 +5,7 @@ import { ProgressCircle } from './ProgressCircle';
 
 const cardStyle = { p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 3 };
 
-function OverallProgressCard({ percentage = 67, message }) {
+function OverallProgressCard({ percentage = 0, message }) {
   const radius = 42;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;

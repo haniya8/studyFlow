@@ -1,38 +1,62 @@
-import { Box, Typography, Chip, Checkbox } from '@mui/material';
+import { useState } from 'react';
+import {
+  Box,
+  Typography,
+  Chip,
+  Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Card from '../Card';
 import { priorityColors } from '../../constants/TaskCardConstants';
+import { deleteTaskDialogText } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { useTasks } from '../../contexts/TasksContext'; 
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { useTasks } from '../../contexts/TasksContext';
 import EditTaskModal from './EditTaskModal';
-import { useState } from 'react';
+
 export default function TaskCard({ task }) {
   const { subjects } = useSubjects();
   const { removeTask, toggleTaskComplete } = useTasks();
   const subject = subjects.find((s) => s.id === task.subjectId);
   const [editOpen, setEditOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
+  const handleDeleteConfirm = () => {
+    removeTask(task.id);
+    setDeleteConfirmOpen(false);
+  };
 
   return (
     <Card sx={{ opacity: task.completed ? 0.6 : 1 }}>
-      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', mb: 1 }}>
-        <Chip
-          label={subject?.name || 'No subject'}
-          size="small"
-          sx={{
-            bgcolor: subject ? `${subject.color}22` : '#EEE', // light tint of the subject color
-            color: subject?.color || 'text.secondary',
-          }}
-        />
-        <Chip
-          label={task.priority}
-          size="small"
-          sx={{ bgcolor: priorityColors[task.priority]?.bg, color: priorityColors[task.priority]?.color }}
-        />
-        <EditOutlinedIcon onClick={() => setEditOpen(true)}/>
-        <DeleteOutlineOutlinedIcon onClick={() => removeTask(task.id)} />
-      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+  <Box sx={{ display: 'flex', gap: 1 }}>
+    <Chip
+      label={subject?.name || 'No subject'}
+      size="small"
+      sx={{
+        bgcolor: subject ? `${subject.color}22` : '#EEE',
+        color: subject?.color || 'text.secondary',
+      }}
+    />
+    <Chip
+      label={task.priority}
+      size="small"
+      sx={{ bgcolor: priorityColors[task.priority]?.bg, color: priorityColors[task.priority]?.color }}
+    />
+  </Box>
+
+  <Box sx={{ display: 'flex', gap: 1 }}>
+    <EditOutlinedIcon onClick={() => setEditOpen(true)} sx={{ cursor: 'pointer' }} />
+    <DeleteTwoToneIcon onClick={() => setDeleteConfirmOpen(true)} sx={{ cursor: 'pointer', color: 'text.secondary', '&:hover': { color: 'error.main' } }} />
+  </Box>
+</Box>
+    
 
       <Typography
         variant="subtitle1"
@@ -54,6 +78,23 @@ export default function TaskCard({ task }) {
       </Box>
 
     <EditTaskModal open={editOpen} onClose={() => setEditOpen(false)} task={task} />
+
+      <Dialog open={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ fontWeight: 700 }}>{deleteTaskDialogText.title}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary">
+            {deleteTaskDialogText.message(task.title)}
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ p: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+          <Button onClick={() => setDeleteConfirmOpen(false)} variant="outlined">
+            {deleteTaskDialogText.cancelButton}
+          </Button>
+          <Button onClick={handleDeleteConfirm} variant="contained" color="error">
+            {deleteTaskDialogText.confirmButton}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </Card>
   );
