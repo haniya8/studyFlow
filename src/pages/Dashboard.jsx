@@ -4,7 +4,7 @@ import OverallProgressCard from '../components/dashboard/OverallProgressCard';
 import RecentlyAddedCard from '../components/dashboard/RecentlyAddedCard';
 import UpcomingDeadlinesCard from '../components/dashboard/UpcomingDeadlinesCard';
 import SubjectsCard from '../components/dashboard/SubjectsCard';
-import { statCardsData, iconMap, OverallProgressCardText } from '../constants/DashboardConstants';
+import { statCardsData, iconMap, getOverallProgress } from '../constants/DashboardConstants';
 import { useTasks } from '../contexts/TasksContext';
 import { dashboardStyles } from '../styles/dashboard.styles';
 import { formatRelativeTime } from '../utils/helper';
@@ -38,6 +38,8 @@ function Dashboard() {
       return { ...task, dueLabel, urgent };
     });
 
+  const { percentage, message } = getOverallProgress(tasks);
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -51,7 +53,7 @@ function Dashboard() {
       <Grid container spacing={2} sx={dashboardStyles.sectionSpacing}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2}>
-            <OverallProgressCard percentage={67} message={OverallProgressCardText.message} />
+            <OverallProgressCard percentage={percentage} message={message} />
             <UpcomingDeadlinesCard tasks={upcomingTasks} onViewAll={() => {}} />
           </Stack>
         </Grid>

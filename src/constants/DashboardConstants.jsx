@@ -33,5 +33,45 @@ export const iconMap = {
 
 
 export const OverallProgressCardText = {
-  message: "You are making steady progress this week. Keep up the momentum to finish your remaining tasks."
+  message: "You are making steady progress this week. Keep up the momentum to finish your remaining tasks.",
 };
+
+export function getOverallProgress(tasks) {
+  const total = tasks.length;
+
+  if (total === 0) {
+    return {
+      percentage: 0,
+      message: 'Add your first task to start tracking your progress.',
+    };
+  }
+
+  const completed = tasks.filter((t) => t.completed).length;
+  const percentage = Math.round((completed / total) * 100);
+
+  if (percentage === 0) {
+    return {
+      percentage,
+      message: "You haven't completed any tasks yet. Get started on your first one!",
+    };
+  }
+
+  if (percentage === 100) {
+    return {
+      percentage,
+      message: 'All tasks completed! Great work this week.',
+    };
+  }
+
+  if (percentage < 50) {
+    return {
+      percentage,
+      message: `You've completed ${completed} of ${total} tasks. Keep going!`,
+    };
+  }
+
+  return {
+    percentage,
+    message: OverallProgressCardText.message,
+  };
+}
