@@ -24,6 +24,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Card from '../components/Card';
 import AppLogo from '../components/AppLogo';
 import { loginStyles } from '../styles/Login.styles';
+import { loginConstants } from '../constants/AuthConstants';
 
 const loginValidationSchema = Yup.object({
   email: Yup.string()
@@ -41,14 +42,14 @@ export default function Login() {
   const { login } = useAuth();
 const [formError, setFormError] = useState('');
 
-  const handleSignIn = () => {
-     const result = login({ email, password });
+  const handleSignIn = (values) => {
+  const result = login({ email: values.email, password: values.password });
   if (!result.success) {
     setFormError(result.error);
     return;
   }
-    navigate('/app');
-  };
+  navigate('/app');
+};
 
   return (
     <Box sx={loginStyles.pageWrapper}>
@@ -56,10 +57,10 @@ const [formError, setFormError] = useState('');
 
       <Card sx={loginStyles.card}>
         <Typography variant="h5" fontWeight={700}>
-          Welcome Back!
+          {loginConstants.welcomeMsg}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={loginStyles.subheading}>
-          Sign in to continue your productivity journey.
+          {loginConstants.subheading}
         </Typography>
 
         <Formik
@@ -138,6 +139,12 @@ const [formError, setFormError] = useState('');
                   Forgot Password?
                 </Link>
               </Box>
+
+              {formError && (
+                <Typography variant="caption" color="error" sx={{ display: 'block', mb: 1 }}>
+                  {formError}
+                </Typography>
+              )}
 
               <Button
                 fullWidth

@@ -3,7 +3,6 @@ import StatCard from '../components/dashboard/StatCard';
 import OverallProgressCard from '../components/dashboard/OverallProgressCard';
 import RecentlyAddedCard from '../components/dashboard/RecentlyAddedCard';
 import UpcomingDeadlinesCard from '../components/dashboard/UpcomingDeadlinesCard';
-import SubjectsCard from '../components/dashboard/SubjectsCard';
 import { statCardsData, iconMap, getOverallProgress } from '../constants/DashboardConstants';
 import { useTasks } from '../contexts/TasksContext';
 import { dashboardStyles } from '../styles/dashboard.styles';
@@ -61,7 +60,6 @@ function Dashboard() {
         <Grid size={{ xs: 12, md: 4 }}>
           <Stack spacing={2}>
             <RecentlyAddedCard items={recentlyAddedItems} />
-            <SubjectsCard onManageSubjects={() => {}} />
           </Stack>
         </Grid>
       </Grid>

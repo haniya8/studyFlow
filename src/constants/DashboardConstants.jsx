@@ -39,11 +39,6 @@ export const iconMap = {
 
 
 
-
-export const OverallProgressCardText = {
-  message: "You are making steady progress this week. Keep up the momentum to finish your remaining tasks.",
-};
-
 export function getOverallProgress(tasks) {
   const total = tasks.length;
 
@@ -80,6 +75,6 @@ export function getOverallProgress(tasks) {
 
   return {
     percentage,
-    message: OverallProgressCardText.message,
+    message: 'You are making steady progress. Keep up the momentum!',
   };
 }

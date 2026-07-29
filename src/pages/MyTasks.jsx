@@ -8,6 +8,7 @@ import { statuses, tasksPageText } from '../constants/MyTasksPageConstants';
 import { myTasksStyles } from '../styles/MyTasks.styles';
 import { useTasks } from '../contexts/TasksContext';
 import { useSubjects } from '../contexts/SubjectsContext';
+import ManageSubjectsDialog from '../components/dashboard/ManageSubjectsDialog';
 
 const SUBJECT_KEY = 'taskSubjectFilter';
 const STATUS_KEY = 'taskStatusFilter';
@@ -15,6 +16,9 @@ const STATUS_KEY = 'taskStatusFilter';
 export default function Tasks() {
   const { tasks } = useTasks();
   const { subjects } = useSubjects();
+
+  
+  const [manageOpen, setManageOpen] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -68,6 +72,11 @@ export default function Tasks() {
           <Button variant="contained" startIcon={<AddIcon />} onClick={() => setModalOpen(true)}>
             {tasksPageText.createTaskButton}
           </Button>
+
+          <Button variant="outlined" onClick={()=>setManageOpen(true)} sx={{ textTransform: 'none', borderRadius: 2 }}>
+            Manage Subjects
+          </Button>
+          
         </Box>
       </Box>
 
@@ -112,7 +121,7 @@ export default function Tasks() {
           </Grid>
         ))}
       </Grid>
-
+      <ManageSubjectsDialog open={manageOpen} onClose={() => setManageOpen(false)} />
       <CreateTaskModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </Box>
   );
