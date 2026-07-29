@@ -16,9 +16,9 @@ export function statCardsData(tasks){
   const inProgress = total - completed - overdue;
   return [
   { key: 'total', label: 'Total Tasks', count: total, icon: 'checklist' },
-  { key: 'completed', label: 'Completed', count: 1, icon: 'checkCircle' },
-  { key: 'inProgress', label: 'In Progress', count: 3, icon: 'pending' },
-  { key: 'overdue', label: 'Overdue', count: 1, icon: 'error' },
+  { key: 'completed', label: 'Completed', count: completed, icon: 'checkCircle' },
+  { key: 'inProgress', label: 'In Progress', count: inProgress, icon: 'pending' },
+  { key: 'overdue', label: 'Overdue', count: overdue, icon: 'error' },
  ];
 }
 

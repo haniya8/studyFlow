@@ -3,12 +3,15 @@ import { Box, Typography, IconButton, Avatar, Menu, MenuItem } from '@mui/materi
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 export default function Header({ title }) {
   const [bellAnchorEl, setBellAnchorEl] = useState(null);
   const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
   const navigate = useNavigate();
   const bellMenuOpen = Boolean(bellAnchorEl);
   const avatarMenuOpen = Boolean(avatarAnchorEl);
+
+  const { logout } = useAuth();
 
   const handleBellClick = (event) => {
     setBellAnchorEl(event.currentTarget);
@@ -28,6 +31,7 @@ export default function Header({ title }) {
 
   const handleLogout = () => {
     handleAvatarMenuClose();
+    logout();
     navigate('/');
   };
 
