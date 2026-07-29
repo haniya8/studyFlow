@@ -1,6 +1,8 @@
 // pages/Signup.jsx
 import { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import {
   Box,
   Typography,
@@ -14,7 +16,6 @@ import {
 
 import AppLogo from '../components/AppLogo';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
@@ -22,14 +23,23 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import Card from '../components/Card';
-import IconBadge from '../components/IconBadge';
+import { signupStyles } from '../styles/Signup.styles';
+
+const signupValidationSchema = Yup.object({
+  fullName: Yup.string().trim().required('Full name is required'),
+  email: Yup.string()
+    .email('Enter a valid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .matches(/[0-9]/, 'Password must contain at least one number')
+    .matches(/[^a-zA-Z0-9]/, 'Password must contain at least one symbol')
+    .required('Password is required'),
+});
 
 export default function Signup() {
   const navigate = useNavigate();
 
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleCreateAccount = () => {
@@ -38,121 +48,129 @@ export default function Signup() {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 3,
-        background: 'linear-gradient(180deg, #F5F3FF 0%, #EDE9FE 100%)',
-        px: 2,
-        py: 4,
-      }}
-    >
-      <Card sx={{ width: '100%', maxWidth: 380, p: 4 }}>
-        {/* Logo */}
-        <AppLogo sx={{ mb: 2 }} />
+    <Box sx={signupStyles.pageWrapper}>
+      <Card sx={signupStyles.card}>
+        <AppLogo sx={signupStyles.logo} />
 
         <Typography variant="h6" fontWeight={700} textAlign="center">
           Create Account
         </Typography>
-        <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ mb: 3 }}>
+        <Typography variant="body2" color="text.secondary" textAlign="center" sx={signupStyles.subheading}>
           Start organizing your academic life today.
         </Typography>
 
-        <Typography variant="caption" sx={{ fontWeight: 600 }}>
-          Full Name
-        </Typography>
-        <TextField
-          fullWidth
-          size="small"
-          placeholder="Enter your name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          sx={{ mt: 0.5, mb: 2 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PersonOutlineOutlinedIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <Typography variant="caption" sx={{ fontWeight: 600 }}>
-          Email Address
-        </Typography>
-        <TextField
-          fullWidth
-          size="small"
-          placeholder="example@university.edu"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{ mt: 0.5, mb: 2 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailOutlinedIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <Typography variant="caption" sx={{ fontWeight: 600 }}>
-          Password
-        </Typography>
-        <TextField
-          fullWidth
-          size="small"
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Min. 8 characters"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          sx={{ mt: 0.5, mb: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LockOutlinedIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton size="small" onClick={() => setShowPassword((prev) => !prev)} edge="end">
-                  {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 3 }}>
-          Use 8+ characters with a mix of symbols and numbers.
-        </Typography>
-
-        <Button
-          fullWidth
-          variant="contained"
-          endIcon={<ArrowForwardIcon />}
-          onClick={handleCreateAccount}
-          sx={{ py: 1.2, borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
+        <Formik
+          initialValues={{ fullName: '', email: '', password: '' }}
+          validationSchema={signupValidationSchema}
+          onSubmit={handleCreateAccount}
         >
-          Create Account
-        </Button>
+          {({ values, errors, touched, handleChange, handleBlur }) => (
+            <Form>
+              <Typography variant="caption" sx={signupStyles.fieldLabel}>
+                Full Name
+              </Typography>
+              <TextField
+                fullWidth
+                size="small"
+                name="fullName"
+                placeholder="Enter your name"
+                value={values.fullName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.fullName && Boolean(errors.fullName)}
+                helperText={touched.fullName && errors.fullName}
+                sx={signupStyles.field}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonOutlineOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-        <Divider sx={{ my: 3 }}>
+              <Typography variant="caption" sx={signupStyles.fieldLabel}>
+                Email Address
+              </Typography>
+              <TextField
+                fullWidth
+                size="small"
+                name="email"
+                placeholder="example@university.edu"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
+                sx={signupStyles.field}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Typography variant="caption" sx={signupStyles.fieldLabel}>
+                Password
+              </Typography>
+              <TextField
+                fullWidth
+                size="small"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Min. 8 characters"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
+                sx={signupStyles.passwordField}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton size="small" onClick={() => setShowPassword((prev) => !prev)} edge="end">
+                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Typography variant="caption" color="text.secondary" sx={signupStyles.passwordHint}>
+                Use 8+ characters with a mix of symbols and numbers.
+              </Typography>
+
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                endIcon={<ArrowForwardIcon />}
+                sx={signupStyles.createButton}
+              >
+                Create Account
+              </Button>
+            </Form>
+          )}
+        </Formik>
+
+        <Divider sx={signupStyles.divider}>
           <Typography variant="caption" color="text.secondary">
             OR SIGN UP WITH
           </Typography>
         </Divider>
 
-        <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-          <Button fullWidth variant="outlined" sx={{ textTransform: 'none', borderRadius: 2 }}>
+        <Box sx={signupStyles.socialButtonsRow}>
+          <Button fullWidth variant="outlined" sx={signupStyles.socialButton}>
             Google
           </Button>
-          <Button fullWidth variant="outlined" sx={{ textTransform: 'none', borderRadius: 2 }}>
+          <Button fullWidth variant="outlined" sx={signupStyles.socialButton}>
             Apple
           </Button>
         </Box>
@@ -164,9 +182,9 @@ export default function Signup() {
           </Link>
         </Typography>
 
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={signupStyles.dividerTight} />
 
-        <Typography variant="caption" color="text.secondary" textAlign="center" sx={{ display: 'block' }}>
+        <Typography variant="caption" color="text.secondary" textAlign="center" sx={signupStyles.footerText}>
           <Link href="#" underline="hover" color="inherit">Terms of Service</Link>
           {' · '}
           <Link href="#" underline="hover" color="inherit">Privacy Policy</Link>

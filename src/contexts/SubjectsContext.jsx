@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { getNextId } from '../utils/getNextId';
+import { getNextId } from '../utils/helper';
 const defaultSubjects = [
   { id: 1, name: 'Mathematics', color: '#6C5CE7' },
 ];

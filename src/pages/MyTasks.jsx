@@ -5,8 +5,13 @@ import AddIcon from '@mui/icons-material/Add';
 import TaskCard from '../components/tasksPage/TaskCard';
 import CreateTaskModal from '../components/tasksPage/CreateTaskModal';
 import { statuses, tasksPageText } from '../constants/MyTasksPageConstants';
+import { myTasksStyles } from '../styles/MyTasks.styles';
 import { useTasks } from '../contexts/TasksContext';
 import { useSubjects } from '../contexts/SubjectsContext';
+
+const SUBJECT_KEY = 'taskSubjectFilter';
+const STATUS_KEY = 'taskStatusFilter';
+
 export default function Tasks() {
   const { tasks } = useTasks();
   const { subjects } = useSubjects();
@@ -14,34 +19,22 @@ export default function Tasks() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  // TODO: move into constants
-  const SUBJECT_KEY = 'taskSubjectFilter';
-  const STATUS_KEY = 'taskStatusFilter';
-
-  // TODO: move into a custom hook logic
-  const [subjectFilter, setSubjectFilter] = useState(
-    () => {
-      const stored = sessionStorage.getItem(SUBJECT_KEY);
-      if (!stored || stored === 'All') return 'All';
-      return Number(stored);
-    }
-  );
+  const [subjectFilter, setSubjectFilter] = useState(() => {
+    const stored = sessionStorage.getItem(SUBJECT_KEY);
+    if (!stored || stored === 'All') return 'All';
+    return Number(stored);
+  });
   const [statusFilter, setStatusFilter] = useState(
     () => sessionStorage.getItem(STATUS_KEY) || 'All'
   );
 
   const filteredTasks = tasks.filter((task) => {
-    console.log(subjectFilter, "subjectFilter");
-    const matchesSubject = task.subjectId === subjectFilter || subjectFilter === 'All' ;
-    const matchesStatus = 
+    const matchesSubject = task.subjectId === subjectFilter || subjectFilter === 'All';
+    const matchesStatus =
       statusFilter === 'All' || (statusFilter === 'Done' ? task.completed : !task.completed);
     const matchesSearch = task.title.toLowerCase().includes(searchText.toLowerCase());
-
-    // console.log(matchesSubject && matchesStatus && matchesSearch);
     return matchesSubject && matchesStatus && matchesSearch;
   });
-
-  console.log(filteredTasks)
 
   useEffect(() => {
     sessionStorage.setItem(SUBJECT_KEY, subjectFilter);
@@ -51,23 +44,19 @@ export default function Tasks() {
     sessionStorage.setItem(STATUS_KEY, statusFilter);
   }, [statusFilter]);
 
-
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+      <Box sx={myTasksStyles.headerRow}>
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>{tasksPageText.heading}</Typography>
+          <Typography variant="h4" sx={myTasksStyles.heading}>{tasksPageText.heading}</Typography>
           <Typography variant="body2" color="text.secondary">
             {tasksPageText.subheading}
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Paper
-            variant="outlined"
-            sx={{ display: 'flex', alignItems: 'center', px: 1.5, py: 0.5, borderRadius: 5, width: 240 }}
-          >
-            <SearchIcon fontSize="small" sx={{ color: 'text.secondary', mr: 1 }} />
+        <Box sx={myTasksStyles.searchAndButtonRow}>
+          <Paper variant="outlined" sx={myTasksStyles.searchPaper}>
+            <SearchIcon fontSize="small" sx={myTasksStyles.searchIcon} />
             <InputBase
               placeholder="Search tasks..."
               fullWidth
@@ -82,8 +71,8 @@ export default function Tasks() {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={myTasksStyles.filterRow}>
+        <Box sx={myTasksStyles.filterGroup}>
           <Typography variant="body2">{tasksPageText.subjectLabel}</Typography>
           <Chip
             label="All"
@@ -91,11 +80,10 @@ export default function Tasks() {
             onClick={() => setSubjectFilter('All')}
             color={subjectFilter === 'All' ? 'primary' : 'default'}
           />
-
           {subjects.map((s) => (
             <Chip
-              key = {s.id}
-              label= {s.name}
+              key={s.id}
+              label={s.name}
               size="small"
               onClick={() => setSubjectFilter(s.id)}
               color={subjectFilter === s.id ? 'primary' : 'default'}
@@ -103,7 +91,7 @@ export default function Tasks() {
           ))}
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={myTasksStyles.filterGroup}>
           <Typography variant="body2">{tasksPageText.statusLabel}</Typography>
           {statuses.map((s) => (
             <Chip

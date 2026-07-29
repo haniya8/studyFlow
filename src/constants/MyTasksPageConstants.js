@@ -32,3 +32,11 @@ export const createTaskModalErrors = {
   dueDate: 'Due date is required',
 };
 
+export const deleteTaskDialogText = {
+  title: 'Delete Task',
+  message: (taskTitle) =>
+    `Are you sure you want to delete "${taskTitle}"? This action cannot be undone.`,
+  cancelButton: 'Cancel',
+  confirmButton: 'Delete',
+};
+

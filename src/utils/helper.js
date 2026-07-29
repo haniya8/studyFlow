@@ -1,4 +1,4 @@
-// utils/formatRelativeTime.js
+// utils/helper.js
 export function formatRelativeTime(timestamp) {
   const diffMs = Date.now() - timestamp;
   const diffMins = Math.floor(diffMs / 60000);
@@ -10,4 +10,9 @@ export function formatRelativeTime(timestamp) {
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays === 1) return 'Yesterday';
   return `${diffDays}d ago`;
+}
+
+export function getNextId(items) {
+  if (items.length === 0) return 1;
+  return Math.max(...items.map((item) => item.id)) + 1;
 }

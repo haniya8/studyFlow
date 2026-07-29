@@ -4,15 +4,15 @@ import OverallProgressCard from '../components/dashboard/OverallProgressCard';
 import RecentlyAddedCard from '../components/dashboard/RecentlyAddedCard';
 import UpcomingDeadlinesCard from '../components/dashboard/UpcomingDeadlinesCard';
 import SubjectsCard from '../components/dashboard/SubjectsCard';
-import {
-  statCardsData, iconMap, OverallProgressCardText } from '../constants/DashboardConstants';
+import { statCardsData, iconMap, OverallProgressCardText } from '../constants/DashboardConstants';
 import { useTasks } from '../contexts/TasksContext';
-import {sectionSpacingSx} from '../styles/dashboardStyles'
-import { formatRelativeTime } from '../utils/formatRelativeTime';
+import { dashboardStyles } from '../styles/dashboard.styles';
+import { formatRelativeTime } from '../utils/helper';
+import { formatDueDateLabel } from '../utils/formatDueDateLabel';
 import { useSubjects } from '../contexts/SubjectsContext';
 
 function Dashboard() {
-  const {tasks} = useTasks();
+  const { tasks } = useTasks();
   const { subjects } = useSubjects();
 
   const recentlyAddedItems = [...tasks]
@@ -31,8 +31,13 @@ function Dashboard() {
 
   const upcomingTasks = [...tasks]
     .filter((t) => !t.completed)
-    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-    .slice(0, 5);
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
+    .slice(0, 5)
+    .map((task) => {
+      const { dueLabel, urgent } = formatDueDateLabel(task.dueDate);
+      return { ...task, dueLabel, urgent };
+    });
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -43,7 +48,7 @@ function Dashboard() {
         ))}
       </Grid>
 
-      <Grid container spacing={2} sx={{ mt: 3 }}>
+      <Grid container spacing={2} sx={dashboardStyles.sectionSpacing}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2}>
             <OverallProgressCard percentage={67} message={OverallProgressCardText.message} />
@@ -58,7 +63,6 @@ function Dashboard() {
           </Stack>
         </Grid>
       </Grid>
-
     </Box>
   );
 }

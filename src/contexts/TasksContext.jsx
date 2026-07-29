@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { getNextId } from '../utils/getNextId';
+import { getNextId } from '../utils/helper';
 
 const defaultTasks = [
   { id: 1, title: 'Calculus Assignment', subjectId: 1, priority: 'Medium Priority', dueDate: '2026-08-01', completed: false, createdAt: Date.now() },
