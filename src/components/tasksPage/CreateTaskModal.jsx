@@ -55,9 +55,7 @@ export default function CreateTaskModal({ open, onClose }) {
       }}
     >
       {({
-        values,
-        errors,
-        touched,
+        values, errors, touched,
         handleChange,
         handleBlur,
         setFieldValue,
