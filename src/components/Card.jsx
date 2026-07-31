@@ -9,7 +9,7 @@ export default function Card({ children, sx }) {
       sx={{
         borderRadius: '12px',
         p: 3,
-        bgcolor: '#fcf8ff',
+        bgcolor: 'background.paper',
         border: '1px solid',
         borderColor: '#EDEDF5', // subtle, cool-toned border matching the design
         ...sx,

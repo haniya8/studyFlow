@@ -32,7 +32,7 @@ export default function Header({ title }) {
   const handleLogout = () => {
     handleAvatarMenuClose();
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
   return (

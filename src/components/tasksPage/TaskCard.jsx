@@ -19,6 +19,7 @@ import { deleteTaskDialogText } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
 import { useTasks } from '../../contexts/TasksContext';
 import EditTaskModal from './EditTaskModal';
+import IconButton from '@mui/material/IconButton';
 
 export default function TaskCard({ task }) {
   const { subjects } = useSubjects();
@@ -52,8 +53,19 @@ export default function TaskCard({ task }) {
   </Box>
 
   <Box sx={{ display: 'flex', gap: 1 }}>
-    <EditOutlinedIcon onClick={() => setEditOpen(true)} sx={{ cursor: 'pointer' }} />
-    <DeleteTwoToneIcon onClick={() => setDeleteConfirmOpen(true)} sx={{ cursor: 'pointer', color: 'text.secondary', '&:hover': { color: 'error.main' } }} />
+    <IconButton onClick={() => setEditOpen(true)} size="small">
+      <EditOutlinedIcon />
+    </IconButton>
+      <IconButton 
+        onClick={() => setDeleteConfirmOpen(true)}
+        size="small"
+        sx={{ 
+          color: 'text.secondary', 
+          '&:hover': { color: 'error.main' } 
+        }}
+      >
+        <DeleteTwoToneIcon />
+      </IconButton>
   </Box>
 </Box>
     

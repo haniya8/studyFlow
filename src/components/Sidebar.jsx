@@ -15,9 +15,9 @@ import AppLogo from './AppLogo';
 import { sidebarText } from '../constants/LayoutConstants';
 
 const navItems = [
-  { label: 'Dashboard', path: '/app', icon: <DashboardIcon /> },
-  { label: 'Tasks', path: '/app/tasks', icon: <ChecklistIcon /> },
-  { label: 'Settings', path: '/app/settings', icon: <SettingsIcon /> },
+  { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
+  { label: 'Tasks', path: '/tasks', icon: <ChecklistIcon /> },
+  { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
 ];
 
 export default function Sidebar() {

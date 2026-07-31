@@ -3,8 +3,8 @@ export const loginConstants = {
     subheading: "Sign in to continue your productivity journey.",
     emailFieldLabel : "EMAIL ADDRESS",
     passwordFieldLabel: "PASSWORD",
-    forgotPwd: "Forgot Password?",
     rememberMe: "Remember me",
+    forgotPwd: "Forgot Password?",
     signinButton: "Sign In",
     signup: "Sign up",
     

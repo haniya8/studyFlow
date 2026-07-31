@@ -16,7 +16,7 @@ function OverallProgressCard({ percentage = 0, message }) {
         <Typography variant="h5" fontWeight={600}>
           Overall Progress
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+        <Typography variant="body2" color="text.primary" sx={{ mt: 1 }}>
           {message}
         </Typography>
       </Box>
@@ -32,7 +32,7 @@ function OverallProgressCard({ percentage = 0, message }) {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="h6" color="#fff" fontWeight={700}>
+          <Typography variant="h6" sx={{ color: '#242323' }} fontWeight={700}>
             {percentage}%
           </Typography>
         </Box>

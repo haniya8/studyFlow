@@ -45,13 +45,14 @@ export default function Signup() {
   const { signup } = useAuth();
   const [formError, setFormError] = useState('');
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = (values) => {
+    const { fullName, email, password } = values;
     const result = signup({ fullName, email, password });
     if (!result.success) {
       setFormError(result.error);
       return;
     }
-  navigate('/app');
+  navigate('/login');
 };
 
   return (
@@ -66,10 +67,10 @@ export default function Signup() {
         </Typography>
         )}
         
-        <Typography variant="h6" fontWeight={700} textAlign="center">
+        <Typography variant="h6" fontWeight={700} sx={{textAlign: "center"}}>
           Create Account
         </Typography>
-        <Typography variant="body2" color="text.secondary" textAlign="center" sx={signupStyles.subheading}>
+        <Typography variant="body2" color="text.secondary" sx={signupStyles.subheading}>
           Start organizing your academic life today.
         </Typography>
 
@@ -94,12 +95,14 @@ export default function Signup() {
                 error={touched.fullName && Boolean(errors.fullName)}
                 helperText={touched.fullName && errors.fullName}
                 sx={signupStyles.field}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonOutlineOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PersonOutlineOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
 
@@ -117,13 +120,15 @@ export default function Signup() {
                 error={touched.email && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
                 sx={signupStyles.field}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
+                slotProps={{
+    input: {
+      startAdornment: (
+        <InputAdornment position="start">
                       <EmailOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
                     </InputAdornment>
                   ),
-                }}
+                },
+              }}
               />
 
               <Typography variant="caption" sx={signupStyles.fieldLabel}>
@@ -141,20 +146,22 @@ export default function Signup() {
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
                 sx={signupStyles.passwordField}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton size="small" onClick={() => setShowPassword((prev) => !prev)} edge="end">
-                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+                slotProps={{
+  input: {
+    startAdornment: (
+      <InputAdornment position="start">
+        <LockOutlinedIcon fontSize="small" sx={signupStyles.inputAdornmentIcon} />
+      </InputAdornment>
+    ),
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton size="small" onClick={() => setShowPassword((prev) => !prev)} edge="end">
+          {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  },
+}}
               />
 
               <Typography variant="caption" color="text.secondary" sx={signupStyles.passwordHint}>
@@ -174,33 +181,18 @@ export default function Signup() {
           )}
         </Formik>
 
-        {/* <Divider sx={signupStyles.divider}>
-          <Typography variant="caption" color="text.secondary">
-            OR SIGN UP WITH
-          </Typography>
-        </Divider>
-
-        <Box sx={signupStyles.socialButtonsRow}>
-          <Button fullWidth variant="outlined" sx={signupStyles.socialButton}>
-            Google
-          </Button>
-          <Button fullWidth variant="outlined" sx={signupStyles.socialButton}>
-            Apple
-          </Button>
-        </Box> */}
-
         <Divider sx={signupStyles.dividerTight} />
 
-        <Typography variant="caption" color="text.secondary" textAlign="center" sx={signupStyles.footerText}>
+        <Typography variant="caption" color="text.secondary" sx={signupStyles.footerText}>
           <Link href="#" underline="hover" color="inherit">Terms of Service</Link>
           {' · '}
           <Link href="#" underline="hover" color="inherit">Privacy Policy</Link>
         </Typography>
       </Card>
 
-      <Typography variant="body2" color="text.secondary" textAlign="left">
+      <Typography variant="body2" color="text.secondary" sx={{textAlign:"left"}}>
           Already have an account?{' '}
-          <Link component={RouterLink} to="/" underline="hover" fontWeight={600}>
+          <Link component={RouterLink} to="/login" underline="hover" fontWeight={600}>
             Sign in
           </Link>
         </Typography>

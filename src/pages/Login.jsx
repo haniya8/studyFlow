@@ -40,7 +40,7 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const { login } = useAuth();
-const [formError, setFormError] = useState('');
+  const [formError, setFormError] = useState('');
 
   const handleSignIn = (values) => {
   const result = login({ email: values.email, password: values.password });
@@ -48,7 +48,7 @@ const [formError, setFormError] = useState('');
     setFormError(result.error);
     return;
   }
-  navigate('/app');
+  navigate('/');
 };
 
   return (
@@ -71,7 +71,7 @@ const [formError, setFormError] = useState('');
           {({ values, errors, touched, handleChange, handleBlur }) => (
             <Form>
               <Typography variant="caption" sx={loginStyles.fieldLabel}>
-                EMAIL ADDRESS
+                {loginConstants.emailFieldLabel}
               </Typography>
               <TextField
                 fullWidth
@@ -84,17 +84,19 @@ const [formError, setFormError] = useState('');
                 error={touched.email && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
                 sx={loginStyles.field}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailOutlinedIcon fontSize="small" sx={loginStyles.inputAdornmentIcon} />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailOutlinedIcon fontSize="small" sx={loginStyles.inputAdornmentIcon} />
+                      </InputAdornment>
+                    ),
+                }
                 }}
               />
 
               <Typography variant="caption" sx={loginStyles.fieldLabel}>
-                PASSWORD
+                {loginConstants.passwordFieldLabel}
               </Typography>
               <TextField
                 fullWidth
@@ -108,11 +110,12 @@ const [formError, setFormError] = useState('');
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
                 sx={loginStyles.passwordField}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockOutlinedIcon fontSize="small" sx={loginStyles.inputAdornmentIcon} />
-                    </InputAdornment>
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockOutlinedIcon fontSize="small" sx={loginStyles.inputAdornmentIcon} />
+                      </InputAdornment>
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
@@ -121,6 +124,7 @@ const [formError, setFormError] = useState('');
                       </IconButton>
                     </InputAdornment>
                   ),
+                },
                 }}
               />
 
@@ -133,10 +137,10 @@ const [formError, setFormError] = useState('');
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
                   }
-                  label={<Typography variant="body2">Remember me</Typography>}
+                  label={<Typography variant="body2">{loginConstants.rememberMe}</Typography>}
                 />
                 <Link component={RouterLink} to="/forgot-password" variant="body2" underline="hover">
-                  Forgot Password?
+                  {loginConstants.forgotPwd}
                 </Link>
               </Box>
 
@@ -153,32 +157,17 @@ const [formError, setFormError] = useState('');
                 endIcon={<ArrowForwardIcon />}
                 sx={loginStyles.signInButton}
               >
-                Sign In
+                {loginConstants.signinButton}
               </Button>
             </Form>
           )}
         </Formik>
-
-        {/* <Divider sx={loginStyles.divider}>
-          <Typography variant="caption" color="text.secondary">
-            OR CONTINUE WITH
-          </Typography>
-        </Divider>
-
-        <Box sx={loginStyles.socialButtonsRow}>
-          <Button fullWidth variant="outlined" sx={loginStyles.socialButton}>
-            Google
-          </Button>
-          <Button fullWidth variant="outlined" sx={loginStyles.socialButton}>
-            Apple
-          </Button>
-        </Box> */}
       </Card>
 
       <Typography variant="body2" color="text.secondary">
         Don&apos;t have an account?{' '}
         <Link component={RouterLink} to="/signup" underline="hover" fontWeight={600}>
-          Sign up
+          {loginConstants.signup}
         </Link>
       </Typography>
     </Box>
