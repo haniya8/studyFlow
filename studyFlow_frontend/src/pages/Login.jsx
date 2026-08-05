@@ -1,6 +1,6 @@
 // pages/Login.jsx
 import { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -35,6 +35,8 @@ const loginValidationSchema = Yup.object({
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -43,12 +45,12 @@ export default function Login() {
   const [formError, setFormError] = useState('');
 
   const handleSignIn = (values) => {
-  const result = login({ email: values.email, password: values.password });
+  const result = login({ email: values.email, password: values.password, rememberMe });
   if (!result.success) {
     setFormError(result.error);
     return;
   }
-  navigate('/');
+  navigate(from, { replace: true });
 };
 
   return (

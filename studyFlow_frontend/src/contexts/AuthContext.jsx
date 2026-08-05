@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 
+const REMEMBERED_SESSION_DURATION_MS = 60 * 60 * 1000; // 60 minutes
+
 const AuthContext = createContext(null);
 
 const USERS_KEY = 'studyflow.users';
@@ -17,8 +19,23 @@ function loadUsers() {
 
 function loadCurrentUser() {
   try {
-    const stored = localStorage.getItem(CURRENT_USER_KEY);
-    return stored ? JSON.parse(stored) : null;
+    // Check sessionStorage first (non-remembered session takes priority within this tab),
+    // then fall back to localStorage (remembered session).
+    const sessionStored = sessionStorage.getItem(CURRENT_USER_KEY);
+    if (sessionStored) return JSON.parse(sessionStored);
+
+    const localStored = localStorage.getItem(CURRENT_USER_KEY);
+    if (!localStored) return null;
+    const parsed = JSON.parse(localStored);
+    if (parsed.expiresAt && Date.now() > parsed.expiresAt) {
+      localStorage.removeItem(CURRENT_USER_KEY);
+      return null;
+    }
+    return parsed;
+
+
+
+
   } catch (err) {
     console.error('Failed to load current user:', err);
     return null;
@@ -39,14 +56,11 @@ export function AuthProvider({ children }) {
     const updatedUsers = [...users, newUser];
     localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
 
-    const sessionUser = { id: newUser.id, fullName: newUser.fullName, email: newUser.email };
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
-    setCurrentUser(sessionUser);
-
+    
     return { success: true };
   }, []);
 
-  const login = useCallback(({ email, password }) => {
+  const login = useCallback(({ email, password, rememberMe }) => {
     const users = loadUsers();
     const match = users.find(
       (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
@@ -57,14 +71,25 @@ export function AuthProvider({ children }) {
     }
 
     const sessionUser = { id: match.id, fullName: match.fullName, email: match.email };
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
+
+    if (rememberMe) {
+      const rememberedUser = { ...sessionUser, expiresAt: Date.now() + REMEMBERED_SESSION_DURATION_MS };
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(rememberedUser));
+      sessionStorage.removeItem(CURRENT_USER_KEY);
+      setCurrentUser(rememberedUser);
+
+    } else {
+    sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
+    localStorage.removeItem(CURRENT_USER_KEY);
     setCurrentUser(sessionUser);
+    }
 
     return { success: true };
   }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem(CURRENT_USER_KEY);
+    sessionStorage.removeItem(CURRENT_USER_KEY);
     setCurrentUser(null);
   }, []);
 
