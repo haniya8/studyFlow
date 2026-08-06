@@ -1,12 +1,5 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const prisma = require('../db/prisma');
-
-const router = express.Router();
-
-router.post('/signup', async (req, res) => {
-  try {
+const signup = async (req, res) => {
+    try {
     const { fullName, email, password } = req.body;
 
     if (!fullName || !email || !password) {
@@ -32,6 +25,6 @@ router.post('/signup', async (req, res) => {
     console.error('Signup error:', err);
     res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
-});
+}
 
-module.exports = router;
+export {signup};
