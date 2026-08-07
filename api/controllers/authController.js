@@ -1,3 +1,8 @@
+//api/controllers/authController.js
+import { prisma } from '../db/prisma.js';
+
+import bcrypt from 'bcrypt';
+
 const signup = async (req, res) => {
     try {
     const { fullName, email, password } = req.body;
@@ -27,4 +32,33 @@ const signup = async (req, res) => {
   }
 }
 
-export {signup};
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required.' });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
+
+    res.status(200).json({
+      message: 'Login successful.',
+      user: { id: user.id, fullName: user.fullName, email: user.email },
+    });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Something went wrong. Please try again.' });
+  }
+};
+
+export { signup, login };

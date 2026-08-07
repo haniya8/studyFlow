@@ -44,8 +44,8 @@ export default function Login() {
   const { login } = useAuth();
   const [formError, setFormError] = useState('');
 
-  const handleSignIn = (values) => {
-  const result = login({ email: values.email, password: values.password, rememberMe });
+  const handleSignIn = async (values) => {
+  const result = await login({ email: values.email, password: values.password, rememberMe });
   if (!result.success) {
     setFormError(result.error);
     return;

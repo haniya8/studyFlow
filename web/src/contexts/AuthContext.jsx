@@ -1,3 +1,4 @@
+//web/src/contexts/AuthContext.jsx
 import { createContext, useContext, useState, useCallback } from 'react';
 
 const REMEMBERED_SESSION_DURATION_MS = 60 * 60 * 1000; // 60 minutes
@@ -6,16 +7,6 @@ const AuthContext = createContext(null);
 
 const USERS_KEY = 'studyflow.users';
 const CURRENT_USER_KEY = 'studyflow.currentUser';
-
-function loadUsers() {
-  try {
-    const stored = localStorage.getItem(USERS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (err) {
-    console.error('Failed to load users:', err);
-    return [];
-  }
-}
 
 function loadCurrentUser() {
   try {
@@ -45,46 +36,59 @@ function loadCurrentUser() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(loadCurrentUser);
 
-  const signup = useCallback(({ fullName, email, password }) => {
-    const users = loadUsers();
-    const existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
-    if (existing) {
-      return { success: false, error: 'An account with this email already exists.' };
+  const signup = useCallback(async ({ fullName, email, password }) => {
+  try {
+    const response = await fetch('http://localhost:4000/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fullName, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { success: false, error: data.error || 'Signup failed.' };
     }
 
-    const newUser = { id: Date.now(), fullName, email, password };
-    const updatedUsers = [...users, newUser];
-    localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
-
-    
     return { success: true };
+  } catch (err) {
+    console.error('Signup request failed:', err);
+    return { success: false, error: 'Could not reach the server. Please try again.' };
+  }
   }, []);
 
-  const login = useCallback(({ email, password, rememberMe }) => {
-    const users = loadUsers();
-    const match = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
+  const login = useCallback(async ({ email, password, rememberMe }) => {
+  try {
+    const response = await fetch('http://localhost:4000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (!match) {
-      return { success: false, error: 'Invalid email or password.' };
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { success: false, error: data.error || 'Login failed.' };
     }
 
-    const sessionUser = { id: match.id, fullName: match.fullName, email: match.email };
+    const sessionUser = data.user;
 
     if (rememberMe) {
       const rememberedUser = { ...sessionUser, expiresAt: Date.now() + REMEMBERED_SESSION_DURATION_MS };
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(rememberedUser));
       sessionStorage.removeItem(CURRENT_USER_KEY);
       setCurrentUser(rememberedUser);
-
     } else {
-    sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
-    localStorage.removeItem(CURRENT_USER_KEY);
-    setCurrentUser(sessionUser);
+      sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
+      localStorage.removeItem(CURRENT_USER_KEY);
+      setCurrentUser(sessionUser);
     }
 
     return { success: true };
+  } catch (err) {
+    console.error('Login request failed:', err);
+    return { success: false, error: 'Could not reach the server. Please try again.' };
+  }
   }, []);
 
   const logout = useCallback(() => {

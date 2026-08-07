@@ -1,4 +1,4 @@
-// pages/Signup.jsx
+// web/src/pages/Signup.jsx
 import { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -45,15 +45,15 @@ export default function Signup() {
   const { signup } = useAuth();
   const [formError, setFormError] = useState('');
 
-  const handleCreateAccount = (values) => {
-    const { fullName, email, password } = values;
-    const result = signup({ fullName, email, password });
-    if (!result.success) {
-      setFormError(result.error);
-      return;
-    }
+  const handleCreateAccount = async (values) => {
+  const { fullName, email, password } = values;
+  const result = await signup({ fullName, email, password }); // ✅ await it
+  if (!result.success) {
+    setFormError(result.error);
+    return;
+  }
   navigate('/login');
-};
+  };
 
   return (
     <Box sx={signupStyles.pageWrapper}>

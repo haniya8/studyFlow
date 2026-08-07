@@ -1,7 +1,8 @@
+//api/server.js
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import authRoutes from './routes/authRoutes';
+import { router as authRoutes } from './routes/authRoutes.js';
 
 const app = express();
 app.use(cors());
@@ -13,7 +14,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
