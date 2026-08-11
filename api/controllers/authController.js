@@ -38,12 +38,12 @@ const signup = async (req, res) => {
       data: { fullName, email, passwordHash },
     });
 
-    const token = generateToken(user);
+    
 
     res.status(201).json({
       message: 'Account created successfully.',
       user: toPublicUser(user),
-      token,
+    
     });
   } catch (err) {
     console.error('Signup error:', err);
