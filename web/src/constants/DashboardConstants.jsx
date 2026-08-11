@@ -9,25 +9,28 @@ export const dashboardPageText = {
   heading: 'Dashboard', 
 };
 function isOverdue(dueDate) {
-  const due = new Date(dueDate);
+  if (!dueDate) return false;
+
+  const [year, month, day] = dueDate.split('-').map(Number);
+  const due = new Date(year, month - 1, day);
   const today = new Date();
-  today.setHours(0, 0, 0, 0);       // strip time, keep local midnight
-  due.setHours(0, 0, 0, 0);          // treat due date as local midnight too, for fair comparison
+  today.setHours(0, 0, 0, 0);
+  due.setHours(0, 0, 0, 0);
   return due < today;
 }
 
-export function statCardsData(tasks){
+export function statCardsData(tasks) {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.completed).length;
   const overdue = tasks.filter((t) => !t.completed && isOverdue(t.dueDate)).length;
-  const inProgress = total - completed - overdue;
-  
+  const inProgress = tasks.filter((t) => !t.completed && !isOverdue(t.dueDate)).length;
+
   return [
-  { key: 'total', label: 'Total Tasks', count: total, icon: 'checklist' },
-  { key: 'completed', label: 'Completed', count: completed, icon: 'checkCircle' },
-  { key: 'inProgress', label: 'In Progress', count: inProgress, icon: 'pending' },
-  { key: 'overdue', label: 'Overdue', count: overdue, icon: 'error' },
- ];
+    { key: 'total', label: 'Total Tasks', count: total, icon: 'checklist' },
+    { key: 'completed', label: 'Completed', count: completed, icon: 'checkCircle' },
+    { key: 'inProgress', label: 'In Progress', count: inProgress, icon: 'pending' },
+    { key: 'overdue', label: 'Overdue', count: overdue, icon: 'error' },
+  ];
 }
 
 export const iconMap = {

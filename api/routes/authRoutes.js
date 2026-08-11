@@ -1,14 +1,12 @@
 //api/routes/authRoutes.js
 import express from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { prisma } from '../db/prisma.js';
-import { signup } from '../controllers/authController.js';
-import { login } from '../controllers/authController.js';
+import { signup, login, getMe } from '../controllers/authController.js';
+import { requireAuth } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.post('/signup', signup);
-router.post('/login', login)
+router.post('/login', login);
+router.get('/me', requireAuth, getMe);
 
-export {router};
+export { router };
