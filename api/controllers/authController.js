@@ -10,7 +10,7 @@ function toPublicUser(user) {
 function generateToken(user, rememberMe = false) {
   const expiresIn = rememberMe
     ? process.env.JWT_REMEMBER_EXPIRES_IN || '7d'
-    : process.env.JWT_EXPIRES_IN || '15m';
+    : process.env.JWT_EXPIRES_IN || '1d';
 
   return jwt.sign(
     { userId: user.id, email: user.email },
