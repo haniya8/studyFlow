@@ -139,7 +139,7 @@ export default function EditTaskModal({ open, onClose, task }) {
               sx={{ mt: 0.5 }}
             >
               {priorities.map((p) => (
-                <MenuItem key={p} value={p}>{p}</MenuItem>
+                <MenuItem key={p.value} value={p.value}>{p.label}</MenuItem>
               ))}
             </TextField>
           </Box>

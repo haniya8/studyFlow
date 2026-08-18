@@ -14,7 +14,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Card from '../Card';
-import { priorityColors } from '../../constants/TaskCardConstants';
+import { priorityColors, priorityLabels } from '../../constants/TaskCardConstants';
 import { deleteTaskDialogText } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
 import { useTasks } from '../../contexts/TasksContext';
@@ -51,7 +51,7 @@ export default function TaskCard({ task }) {
       }}
     />
     <Chip
-      label={task.priority}
+      label={priorityLabels[task.priority] ||task.priority}
       size="small"
       sx={{ bgcolor: priorityColors[task.priority]?.bg, color: priorityColors[task.priority]?.color }}
     />

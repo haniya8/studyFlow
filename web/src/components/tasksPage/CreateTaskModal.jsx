@@ -156,7 +156,7 @@ export default function CreateTaskModal({ open, onClose }) {
                       sx={{ mt: 0.5 }}
                     >
                       {priorities.map((p) => (
-                        <MenuItem key={p} value={p}>{p}</MenuItem>
+                        <MenuItem key={p.value} value={p.value}>{p.label}</MenuItem>
                       ))}
                     </TextField>
                   </Box>

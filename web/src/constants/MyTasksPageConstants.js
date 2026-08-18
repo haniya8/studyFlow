@@ -1,7 +1,11 @@
-// src/constants/tasksPageContent.js
+// src/constants/MyTasksPageConstants.js
 export const statuses = ['All', 'Doing', 'Done'];
-export const priorities = ['Low Priority', 'Medium Priority', 'High Priority'];
-export const defaultPriority = 'Medium Priority';
+export const priorities = [
+  { value: 'LOW', label: 'Low Priority' },
+  { value: 'MEDIUM', label: 'Medium Priority' },
+  { value: 'HIGH', label: 'High Priority' },
+];
+export const defaultPriority = 'MEDIUM';
 
 
 export const tasksPageText = {
