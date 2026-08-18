@@ -1,59 +1,80 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { getNextId } from '../utils/helper';
-const defaultSubjects = [
-  { id: 1, name: 'Mathematics', color: '#6C5CE7' },
-];
-
-const palette = ['#6C5CE7', '#3498DB', '#E74C3C', '#8E44AD', '#27AE60', '#F39C12', '#16A085'];
-
-const STORAGE_KEY = 'studyflow.subjects';
+import { useAuth } from './AuthContext';
+import { authFetch } from '../utils/api';
 
 const SubjectsContext = createContext(null);
-
-function loadSubjects() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : defaultSubjects;
-  } catch (err) {
-    console.error('Failed to load subjects from storage:', err);
-    return defaultSubjects;
-  }
-}
+const SUBJECTS_PATH = '/api/subjects';
 
 export function SubjectsProvider({ children }) {
-  const [subjects, setSubjects] = useState(loadSubjects);
+  const { currentUser } = useAuth();
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // persist to localStorage any time subjects changes
-  useEffect(() => {
+  const fetchSubjects = useCallback(async () => {
+    setLoading(true);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+      const response = await authFetch(SUBJECTS_PATH);
+      if (!response.ok) throw new Error('Failed to fetch subjects');
+      const data = await response.json();
+      setSubjects(data);
     } catch (err) {
-      console.error('Failed to save subjects to storage:', err);
+      console.error('Failed to fetch subjects:', err);
+    } finally {
+      setLoading(false);
     }
-  }, [subjects]);
+  }, []);
 
-  const addSubject = useCallback((name) => {
-    const trimmed = name.trim();
-    if (!trimmed) return null;
+  useEffect(() => {
+    if (currentUser) {
+      fetchSubjects();
+    } else {
+      setSubjects([]);
+      setLoading(false);
+    }
+  }, [currentUser, fetchSubjects]);
 
-    const existing = subjects.find((s) => s.name.toLowerCase() === trimmed.toLowerCase());
-    if (existing) return existing;
+  const addSubject = useCallback(async ({ name, color }) => {
+    try {
+      const response = await authFetch(SUBJECTS_PATH, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, color }),
+      });
 
-    const newSubject = {
-      id: getNextId(subjects),
-      name: trimmed,
-      color: palette[subjects.length % palette.length],
-    };
-    setSubjects((prev) => [...prev, newSubject]);
-    return newSubject;
-  }, [subjects]);
+      const data = await response.json();
 
-  const removeSubject = useCallback((id) => {
-    setSubjects((prev) => prev.filter((s) => s.id !== id));
+      if (!response.ok) {
+        return { success: false, error: data.error || 'Could not add subject.' };
+      }
+
+      setSubjects((prev) => [...prev, data]);
+      return { success: true, subject: data };
+    } catch (err) {
+      console.error('Failed to add subject:', err);
+      return { success: false, error: 'Could not reach the server.' };
+    }
+  }, []);
+
+  const deleteSubject = useCallback(async (id) => {
+    try {
+      const response = await authFetch(`${SUBJECTS_PATH}/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        return { success: false, error: 'Could not delete subject.' };
+      }
+
+      setSubjects((prev) => prev.filter((s) => s.id !== id));
+      return { success: true };
+    } catch (err) {
+      console.error('Failed to delete subject:', err);
+      return { success: false, error: 'Could not reach the server.' };
+    }
   }, []);
 
   return (
-    <SubjectsContext.Provider value={{ subjects, addSubject, removeSubject }}>
+    <SubjectsContext.Provider value={{ subjects, loading, addSubject, deleteSubject }}>
       {children}
     </SubjectsContext.Provider>
   );

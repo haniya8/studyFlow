@@ -20,17 +20,22 @@ import { useSubjects } from '../../contexts/SubjectsContext';
 import { useTasks } from '../../contexts/TasksContext';
 import EditTaskModal from './EditTaskModal';
 import IconButton from '@mui/material/IconButton';
+import { formatDueDateLabel } from '../../utils/formatDueDateLabel';
 
 export default function TaskCard({ task }) {
   const { subjects } = useSubjects();
-  const { removeTask, toggleTaskComplete } = useTasks();
+  const { deleteTask, toggleTaskComplete } = useTasks();
   const subject = subjects.find((s) => s.id === task.subjectId);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const handleDeleteConfirm = () => {
-    removeTask(task.id);
-    setDeleteConfirmOpen(false);
+  console.log('raw dueDate:', task.dueDate, typeof task.dueDate);
+  
+  const { dueLabel } = formatDueDateLabel(task.dueDate);
+
+  const handleDeleteConfirm = async () => {
+    const result = await deleteTask(task.id);
+    if (result.success) setDeleteConfirmOpen(false);
   };
 
   return (
@@ -84,7 +89,7 @@ export default function TaskCard({ task }) {
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
           <CalendarTodayIcon fontSize="inherit" />
-          <Typography variant="caption">{task.dueDate}</Typography>
+          <Typography variant="caption">{dueLabel}</Typography>
         </Box>
         <Checkbox checked={task.completed} onChange={()=> toggleTaskComplete(task.id)} size="small" />
       </Box>

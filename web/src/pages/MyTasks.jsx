@@ -8,7 +8,7 @@ import { statuses, tasksPageText } from '../constants/MyTasksPageConstants';
 import { myTasksStyles } from '../styles/MyTasks.styles';
 import { useTasks } from '../contexts/TasksContext';
 import { useSubjects } from '../contexts/SubjectsContext';
-import ManageSubjectsDialog from '../components/dashboard/ManageSubjectsDialog';
+import ManageSubjectsDialog from '../components/tasksPage/ManageSubjectsDialog';
 
 const SUBJECT_KEY = 'taskSubjectFilter';
 const STATUS_KEY = 'taskStatusFilter';

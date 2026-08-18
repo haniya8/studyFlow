@@ -1,9 +1,14 @@
 function parseLocalDate(dateStr) {
-  const [year, month, day] = dateStr.split('-').map(Number);
+  const datePart = dateStr.slice(0, 10);
+  const [year, month, day] = datePart.split('-').map(Number);
   return new Date(year, month - 1, day);
 }
 
 export function formatDueDateLabel(dueDateStr) {
+  if (!dueDateStr) {
+    return { dueLabel: 'No due date', urgent: false };
+  }
+
   const due = parseLocalDate(dueDateStr);
   const today = new Date();
   today.setHours(0, 0, 0, 0);

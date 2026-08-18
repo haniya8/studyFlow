@@ -16,7 +16,6 @@ import {
   Autocomplete,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import AddIcon from '@mui/icons-material/Add';
 import { priorities, createTaskModalText, createTaskModalErrors, defaultPriority } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
 
@@ -29,7 +28,7 @@ const createTaskValidationSchema = Yup.object({
 });
 
 export default function CreateTaskModal({ open, onClose }) {
-  const { subjects, addSubject } = useSubjects();
+  const { subjects } = useSubjects();
   const { addTask } = useTasks();
 
   return (
@@ -118,49 +117,24 @@ export default function CreateTaskModal({ open, onClose }) {
                       size="small"
                       value={values.subject}
                       options={subjects}
-                      getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
+                      getOptionLabel={(option) => option.name}
                       isOptionEqualToValue={(option, val) => option.id === val?.id}
-                      filterOptions={(options, params) => {
-                        const filtered = options.filter((o) =>
-                          o.name.toLowerCase().includes(params.inputValue.toLowerCase())
-                        );
-                        const exists = options.some(
-                          (o) => o.name.toLowerCase() === params.inputValue.toLowerCase()
-                        );
-                        if (params.inputValue !== '' && !exists) {
-                          filtered.push({ inputValue: params.inputValue, isNew: true });
-                        }
-                        return filtered;
-                      }}
                       onChange={(event, newValue) => {
-                        if (typeof newValue === 'string') {
-                          setFieldValue('subject', addSubject(newValue));
-                        } else if (newValue?.isNew) {
-                          setFieldValue('subject', addSubject(newValue.inputValue));
-                        } else {
-                          setFieldValue('subject', newValue);
-                        }
+                        setFieldValue('subject', newValue);
                       }}
                       onBlur={() => setFieldTouched('subject', true)}
                       renderOption={(props, option) => (
-                        <Box component="li" {...props} key={option.id ?? option.inputValue}>
-                          {option.isNew ? (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#6C5CE7' }}>
-                              <AddIcon fontSize="small" />
-                              <Typography variant="body2">Add "{option.inputValue}"</Typography>
-                            </Box>
-                          ) : (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: option.color }} />
-                              {option.name}
-                            </Box>
-                          )}
+                        <Box component="li" {...props} key={option.id}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: option.color }} />
+                            {option.name}
+                          </Box>
                         </Box>
                       )}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          placeholder="Select or add"
+                          placeholder="Select a subject"
                           error={touched.subject && Boolean(errors.subject)}
                           helperText={touched.subject && errors.subject}
                           sx={{ mt: 0.5 }}

@@ -15,7 +15,7 @@ function Dashboard() {
   const { subjects } = useSubjects();
 
   const recentlyAddedItems = [...tasks]
-    .sort((a, b) => b.createdAt - a.createdAt)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 3)
     .map((task) => {
       const subject = subjects.find((s) => s.id === task.subjectId);

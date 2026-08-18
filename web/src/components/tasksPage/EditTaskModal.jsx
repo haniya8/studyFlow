@@ -14,13 +14,12 @@ import {
   Autocomplete,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import AddIcon from '@mui/icons-material/Add';
 import { priorities, createTaskModalText, createTaskModalErrors } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
 import { useTasks } from '../../contexts/TasksContext';
 
 export default function EditTaskModal({ open, onClose, task }) {
-  const { subjects, addSubject } = useSubjects();
+  const { subjects } = useSubjects();
   const { updateTask } = useTasks();
 
   const [title, setTitle] = useState('');
@@ -30,14 +29,13 @@ export default function EditTaskModal({ open, onClose, task }) {
   const [dueDate, setDueDate] = useState('');
   const [errors, setErrors] = useState({});
 
-  // pre-fill fields whenever a new task is passed in / modal opens
   useEffect(() => {
     if (task) {
       setTitle(task.title || '');
       setDescription(task.description || '');
       setSubject(subjects.find((s) => s.id === task.subjectId) || null);
       setPriority(task.priority || 'Medium Priority');
-      setDueDate(task.dueDate || '');
+      setDueDate(task.dueDate ? task.dueDate.slice(0, 10) : '');
       setErrors({});
     }
   }, [task, subjects]);
@@ -52,17 +50,20 @@ export default function EditTaskModal({ open, onClose, task }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!validate()) return;
 
-    updateTask(task.id, {
+    const result = await updateTask(task.id, {
       title,
       description,
       subjectId: subject.id,
       priority,
       dueDate,
     });
-    onClose();
+
+    if (result.success) {
+      onClose();
+    }
   };
 
   return (
@@ -108,42 +109,17 @@ export default function EditTaskModal({ open, onClose, task }) {
               size="small"
               value={subject}
               options={subjects}
-              getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
+              getOptionLabel={(option) => option.name}
               isOptionEqualToValue={(option, val) => option.id === val?.id}
-              filterOptions={(options, params) => {
-                const filtered = options.filter((o) =>
-                  o.name.toLowerCase().includes(params.inputValue.toLowerCase())
-                );
-                const exists = options.some(
-                  (o) => o.name.toLowerCase() === params.inputValue.toLowerCase()
-                );
-                if (params.inputValue !== '' && !exists) {
-                  filtered.push({ inputValue: params.inputValue, isNew: true });
-                }
-                return filtered;
-              }}
               onChange={(event, newValue) => {
-                if (typeof newValue === 'string') {
-                  setSubject(addSubject(newValue));
-                } else if (newValue?.isNew) {
-                  setSubject(addSubject(newValue.inputValue));
-                } else {
-                  setSubject(newValue);
-                }
+                setSubject(newValue);
               }}
               renderOption={(props, option) => (
-                <Box component="li" {...props} key={option.id ?? option.inputValue}>
-                  {option.isNew ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#6C5CE7' }}>
-                      <AddIcon fontSize="small" />
-                      <Typography variant="body2">Add "{option.inputValue}"</Typography>
-                    </Box>
-                  ) : (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: option.color }} />
-                      {option.name}
-                    </Box>
-                  )}
+                <Box component="li" {...props} key={option.id}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: option.color }} />
+                    {option.name}
+                  </Box>
                 </Box>
               )}
               renderInput={(params) => (

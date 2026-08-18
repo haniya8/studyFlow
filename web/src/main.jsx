@@ -1,3 +1,4 @@
+//web/src/main.jsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
@@ -15,13 +16,13 @@ import { AuthProvider } from './contexts/AuthContext';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppThemeProvider>
-      <SubjectsProvider>
-        <TasksProvider>
-          <AuthProvider>
+      <AuthProvider>
+        <SubjectsProvider>
+          <TasksProvider>
             <RouterProvider router={router} />
-          </AuthProvider>
-        </TasksProvider>
-      </SubjectsProvider>
+          </TasksProvider>
+        </SubjectsProvider>
+      </AuthProvider>
     </AppThemeProvider>
   </StrictMode>,
 );
