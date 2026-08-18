@@ -1,5 +1,6 @@
 //api/controllers/taskController.js
 import { prisma } from '../db/prisma.js';
+const VALID_PRIORITIES = ['LOW', 'MEDIUM', 'HIGH'];
 
 const getTaskStats = async (req, res) => {
   try {
@@ -80,6 +81,9 @@ const createTask = async (req, res) => {
     if (!title) {
       return res.status(400).json({ error: 'Title is required.' });
     }
+    if (priority && !VALID_PRIORITIES.includes(priority)) {
+  return res.status(400).json({ error: 'Invalid priority.' });
+}
     const task = await prisma.task.create({
       data: {
         title,
