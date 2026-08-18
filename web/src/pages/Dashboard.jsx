@@ -9,10 +9,13 @@ import { dashboardStyles } from '../styles/dashboard.styles';
 import { formatRelativeTime } from '../utils/helper';
 import { formatDueDateLabel } from '../utils/formatDueDateLabel';
 import { useSubjects } from '../contexts/SubjectsContext';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const { tasks } = useTasks();
   const { subjects } = useSubjects();
+  const navigate = useNavigate();
+
 
   const recentlyAddedItems = [...tasks]
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -53,7 +56,7 @@ function Dashboard() {
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2}>
             <OverallProgressCard percentage={percentage} message={message} />
-            <UpcomingDeadlinesCard tasks={upcomingTasks} onViewAll={() => {}} />
+            <UpcomingDeadlinesCard tasks={upcomingTasks} onViewAll= {() => navigate('/tasks')} />
           </Stack>
         </Grid>
 

@@ -11,7 +11,7 @@ export default function Header({ title }) {
   const bellMenuOpen = Boolean(bellAnchorEl);
   const avatarMenuOpen = Boolean(avatarAnchorEl);
 
-  const { logout } = useAuth();
+  const { logout, currentUser } = useAuth();
 
   const handleBellClick = (event) => {
     setBellAnchorEl(event.currentTarget);
@@ -70,7 +70,24 @@ export default function Header({ title }) {
           <MenuItem onClick={handleBellMenuClose}>No Notifications yet.</MenuItem>
         </Menu>
 
-        <Avatar onClick={handleAvatarClick} sx={{ cursor: 'pointer' }} />
+        <Avatar onClick={handleAvatarClick} sx={{ cursor: 'pointer' }}>
+          {currentUser?.fullName?.charAt(0).toUpperCase()}
+        </Avatar>
+        
+        {currentUser?.fullName && (
+          <Typography
+            sx={{
+              fontFamily: 'Quicksand',
+              fontWeight: 500,
+              fontSize: 14,
+              color: 'text.secondary',
+            }}
+          >
+            {currentUser.fullName}
+          </Typography>
+        )}
+
+        
 
         <Menu anchorEl={avatarAnchorEl} open={avatarMenuOpen} onClose={handleAvatarMenuClose}>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>

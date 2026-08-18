@@ -3,10 +3,13 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import SchoolIcon from '@mui/icons-material/School';
 import Card from '../Card';
 import { useSubjects } from '../../contexts/SubjectsContext';
+import { useTasks } from '../../contexts/TasksContext';
+
 
 function UpcomingDeadlinesCard({ tasks = [], onViewAll }) {
   const { subjects } = useSubjects();
   const getSubject = (subjectId) => subjects.find((s) => s.id === subjectId);
+  const { toggleTaskComplete } = useTasks();
 
   return (
     <Card sx={{ p: 3, borderRadius: 3 }}>
@@ -35,7 +38,14 @@ function UpcomingDeadlinesCard({ tasks = [], onViewAll }) {
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                <Checkbox checked={task.completed} size="small" />
+                <Checkbox 
+                  checked={task.completed} 
+                  size="small" 
+                  onChange={async () => { 
+                    event.stopPropagation();
+                    await toggleTaskComplete(task.id); 
+                  }}
+                />
                 <Box>
                   <Typography variant="body2" fontWeight={600}>
                     {task.title}
