@@ -19,12 +19,15 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   tasks        Task[]
+  subjects     Subject[]
 }
 
 model Subject {
   id    Int    @id @default(autoincrement())
   name  String
   color String
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
   tasks Task[]
 }
 
@@ -37,8 +40,8 @@ model Task {
   completed   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   userId      Int
-  subjectId   Int?
+  subjectId   Int
 
   user        User      @relation(fields: [userId], references: [id])
-  subject     Subject?  @relation(fields: [subjectId], references: [id])
+  subject     Subject  @relation(fields: [subjectId], references: [id])
 }

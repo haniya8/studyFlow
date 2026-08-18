@@ -13,7 +13,7 @@ function generateToken(user, rememberMe = false) {
     : process.env.JWT_EXPIRES_IN || '1d';
 
   return jwt.sign(
-    { userId: user.id, email: user.email },
+    { id: user.id, email: user.email },
     process.env.JWT_SECRET,
     { expiresIn },
   );
@@ -85,7 +85,7 @@ const login = async (req, res) => {
 const getMe = async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: req.userId },
+      where: { id: req.user.id },
       select: { id: true, fullName: true, email: true },
     });
 
