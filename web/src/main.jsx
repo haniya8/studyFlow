@@ -10,9 +10,11 @@ import '@fontsource/quicksand/600.css';
 import '@fontsource/quicksand/700.css';
 import { AppThemeProvider } from './contexts/ThemeContext';
 import { SubjectsProvider } from './contexts/SubjectsContext';
-import { TasksProvider } from './contexts/TasksContext';
-import { AuthProvider } from './contexts/AuthContext';
-import { NotificationsProvider } from './contexts/NotificationsContext';
+// import { TasksProvider } from './contexts/TasksContext';
+// import { AuthProvider } from './contexts/AuthContext';
+// import { NotificationsProvider } from './contexts/NotificationsContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
