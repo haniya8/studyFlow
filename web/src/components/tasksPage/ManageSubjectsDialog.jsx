@@ -40,6 +40,13 @@ export default function ManageSubjectsDialog({ open, onClose }) {
     }
   };
 
+  const handleDelete = async (id) => {
+    const result = await deleteSubject(id);
+  if (!result.success) {
+    setError(result.error || 'Could not delete subject.');
+  }
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -109,14 +116,21 @@ export default function ManageSubjectsDialog({ open, onClose }) {
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 1 }}
           >
             <SubjectLabel subject={subject}/>
-            <IconButton size="small" onClick={() => deleteSubject(subject.id)}>
+            <IconButton size="small" onClick={() => handleDelete(subject.id)}>
               <DeleteOutlineOutlinedIcon fontSize="small" />
             </IconButton>
           </Box>
         ))}
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
-        <Button onClick={onClose} variant="contained">Done</Button>
+        <Button onClick={ () =>{
+          setError('');
+          onClose();
+        }} 
+        variant="contained"
+        > Done
+        </Button>
+
       </DialogActions>
     </Dialog>
   );

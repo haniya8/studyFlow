@@ -47,6 +47,9 @@ const deleteSubject = async (req, res) => {
     res.status(204).send();   
     
   } catch (err) {
+    if (err.code === 'P2039') {
+      return res.status(409).json({ error: 'Cannot delete a subject that still has tasks. Delete or reassign its tasks first.' });
+    }
     console.error('Delete Subject error:', err); //sent to server console
     res.status(500).json({error: "Failed to delete subject."}); //sent to client
   }

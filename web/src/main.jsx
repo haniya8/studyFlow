@@ -12,6 +12,7 @@ import { AppThemeProvider } from './contexts/ThemeContext';
 import { SubjectsProvider } from './contexts/SubjectsContext';
 import { TasksProvider } from './contexts/TasksContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { NotificationsProvider } from './contexts/NotificationsContext';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,7 +20,9 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <SubjectsProvider>
           <TasksProvider>
-            <RouterProvider router={router} />
+            <NotificationsProvider>
+              <RouterProvider router={router} />
+            </NotificationsProvider>
           </TasksProvider>
         </SubjectsProvider>
       </AuthProvider>
