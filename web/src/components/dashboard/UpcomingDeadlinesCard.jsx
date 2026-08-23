@@ -3,7 +3,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import SchoolIcon from '@mui/icons-material/School';
 import Card from '../Card';
 import { useSubjects } from '../../contexts/SubjectsContext';
-import { useTasks } from '../../contexts/TasksContext';
+import { useTasks } from '../../hooks/useTasks';
 
 
 function UpcomingDeadlinesCard({ tasks = [], onViewAll }) {

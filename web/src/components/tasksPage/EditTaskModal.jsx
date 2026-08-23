@@ -16,7 +16,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { priorities, createTaskModalText, createTaskModalErrors } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
-import { useTasks } from '../../contexts/TasksContext';
+import { useTasks } from '../../hooks/useTasks';
 
 export default function EditTaskModal({ open, onClose, task }) {
   const { subjects } = useSubjects();

@@ -17,14 +17,14 @@ import Card from '../Card';
 import { priorityColors, priorityLabels } from '../../constants/TaskCardConstants';
 import { deleteTaskDialogText } from '../../constants/MyTasksPageConstants';
 import { useSubjects } from '../../contexts/SubjectsContext';
-import { useTasks } from '../../contexts/TasksContext';
+import { useTasks } from '../../hooks/useTasks';
 import EditTaskModal from './EditTaskModal';
 import IconButton from '@mui/material/IconButton';
 import { formatDueDateLabel } from '../../utils/formatDueDateLabel';
 
 export default function TaskCard({ task }) {
   const { subjects } = useSubjects();
-  const { deleteTask, toggleTaskComplete } = useTasks();
+  const { tasks, loading, deleteTask, toggleTaskComplete } = useTasks();
   const subject = subjects.find((s) => s.id === task.subjectId);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);

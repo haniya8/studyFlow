@@ -4,7 +4,7 @@ import OverallProgressCard from '../components/dashboard/OverallProgressCard';
 import RecentlyAddedCard from '../components/dashboard/RecentlyAddedCard';
 import UpcomingDeadlinesCard from '../components/dashboard/UpcomingDeadlinesCard';
 import { statCardsData, iconMap, getOverallProgress } from '../constants/DashboardConstants';
-import { useTasks } from '../contexts/TasksContext';
+import { useTasks } from '../hooks/useTasks';
 import { dashboardStyles } from '../styles/dashboard.styles';
 import { formatRelativeTime } from '../utils/helper';
 import { formatDueDateLabel } from '../utils/formatDueDateLabel';

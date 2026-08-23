@@ -6,7 +6,7 @@ import TaskCard from '../components/tasksPage/TaskCard';
 import CreateTaskModal from '../components/tasksPage/CreateTaskModal';
 import { statuses, tasksPageText } from '../constants/MyTasksPageConstants';
 import { myTasksStyles } from '../styles/MyTasks.styles';
-import { useTasks } from '../contexts/TasksContext';
+import { useTasks } from '../hooks/useTasks';
 import { useSubjects } from '../contexts/SubjectsContext';
 import ManageSubjectsDialog from '../components/tasksPage/ManageSubjectsDialog';
 

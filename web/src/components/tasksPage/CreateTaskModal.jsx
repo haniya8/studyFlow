@@ -1,7 +1,7 @@
 // components/CreateTaskModal.jsx
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import {useTasks} from '../../contexts/TasksContext';
+import {useTasks} from '../../hooks/useTasks';
 import {
   Dialog,
   DialogTitle,

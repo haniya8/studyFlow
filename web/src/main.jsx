@@ -20,13 +20,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppThemeProvider>
       <AuthProvider>
-        <SubjectsProvider>
-          <TasksProvider>
-            <NotificationsProvider>
+        <QueryClientProvider client={queryClient}>
               <RouterProvider router={router} />
-            </NotificationsProvider>
-          </TasksProvider>
-        </SubjectsProvider>
+         </QueryClientProvider>
       </AuthProvider>
     </AppThemeProvider>
   </StrictMode>,
